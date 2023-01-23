@@ -3,7 +3,7 @@ export default function Header() {
     /* TODO: Mirar Colores que queden bien con el tema claro
         y mirar colores complementarios para el tema oscuro.
      */
-    <nav className="bg-[#00B16A] border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-[#00A676]">
+    <nav className="bg-[#00B16A] border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-rose-600">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         <a href="http://localhost:5173" className="flex items-center">
           <img
