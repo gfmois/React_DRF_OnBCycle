@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 export default function HomePage() {
   return (
-    <div className="_wrapper">
-      <div className="inial-info flex items-center justify-center">
+    <div className="_wrapper w-full">
+      <div className="inial-info flex items-center justify-center w-full">
         <div className="bg-white w-full h-full p-3">
             {/* //! TODO: Hacer que la imagen coja todo el ancho */}
           <figure className="relative max-w-sm transition-all duration-300 cursor-pointer filter grayscale hover:grayscale-0 w-full h-full">
