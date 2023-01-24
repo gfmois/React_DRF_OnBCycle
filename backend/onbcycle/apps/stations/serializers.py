@@ -22,3 +22,7 @@ class StationSerializer(serializers.ModelSerializer):
             stations.append(StationSerializer.to_station(station))
             
         return stations
+    
+    def create(self, validate_data):
+        station = Station.objects.create(**validate_data)
+        return station
