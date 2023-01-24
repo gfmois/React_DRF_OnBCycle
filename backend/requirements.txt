@@ -3,3 +3,5 @@ django-cors-headers
 pymysql==1.0.2 # Move to Postgres?
 djangorestframework
 django-admin
+django-environ
+pymysql

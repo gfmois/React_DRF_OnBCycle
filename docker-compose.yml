@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  database:
+    image: mysql:5.7
+    container_name: mysql_container_onbcycle
+    restart: always
+    command: --init-file /data/application/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./conf/db/init.sql:/data/application/init.sql
+    ports:
+      - ${MYSQL_PORT}:3306
+    networks:
+      - rdj_network
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    container_name: phpmyadmin_container_onbcycle
+    ports:
+      - 81:80
+    environment:
+      - PMA_PORT=${MYSQL_PORT}
+      - PMA_HOST=mysql_container_onbcycle
+    depends_on:
+      - database
+    networks:
+      - rdj_network
+
+networks:
+  rdj_network:
