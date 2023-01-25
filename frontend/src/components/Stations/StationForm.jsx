@@ -14,31 +14,33 @@ export default function StationForm({ visible, item }) {
   }, []);
 
   return visible ? (
-    <div className="p-6 h-[100vh] flex flex-col xs:items-center md:items-start justify-center">
-      <Link
-        to="/"
-        className="flex gap-4 items-center justify-center ml-6 text-[#2d2d2d] dark:text-white bg-transparent border border-[#2d2d2d] dark:border-white focus:ring-4 focus:ring-[#2d2d2d] rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-white"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
+    <div className="h-[100vh] flex flex-col xs:items-center md:items-start justify-center">
+      <div className="flex items-center justify-center mt-1">
+        <Link
+          to="/"
+          className="xs:absolute xs:top-20 xs:z-50 xs:bg-black sm:z-0 sm:bg-transparent sm:static flex gap-4 items-center justify-center ml-6 text-[#2d2d2d] dark:text-white bg-transparent border border-[#2d2d2d] dark:border-white focus:ring-4 focus:ring-[#2d2d2d] rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-white"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-          />
-        </svg>
-        Back
-      </Link>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+            />
+          </svg>
+          Back
+        </Link>
+      </div>
 
-      <div className="xs:w-screen xs:h-screen md:w-full xs:p-4 md:p-8 md:h-full grid grid-cols-1 xs:gap-2 md:gap-4 md:grid-cols-2">
+      <div className="xs:w-screen xs:h-screen md:w-full md:p-8 md:h-full grid grid-cols-1 xs:gap-2 md:gap-4 md:grid-cols-2">
         <motion.div
-          className=" w-full h-[85%] bg-rose-600 rounded-lg p-6"
+          className="xs:hidden sm:flex sm:flex-col w-full h-[85%] bg-rose-600 rounded-lg p-6"
           initial={{ x: -1000, y: 1000 }}
           animate={{ x: 0, y: 0 }}
           transition={{
@@ -61,7 +63,7 @@ export default function StationForm({ visible, item }) {
           </div>
         </motion.div>
         <motion.div
-          className=" w-full h-[85%] bg-rose-600 rounded-lg"
+          className="xs:w-screen xs:h-screen sm:w-full sm:h-[85%] bg-rose-600 rounded-lg"
           initial={{ x: 1000, y: 1000 }}
           animate={{ x: 0, y: 0 }}
           transition={{
