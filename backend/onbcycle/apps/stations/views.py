@@ -19,14 +19,20 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         serializer = StationSerializer.read()
         return Response(serializer)
 
-    def create(self, request: Request):
+    def getStation(self, *args, **kwargs):
+        serializer = StationSerializer.getStationById(self, kwargs['id_station'])
+        return Response(serializer)
+
+    def create(self, request: Request):    
         serializer_context = {
             'id_station': request.POST.get('id_station'),
             'name': request.POST.get('name'),
             'lat': request.POST.get('lat'),
             'long': request.POST.get('long'),
             'capacity': request.POST.get('capacity'),
-            'state': request.POST.get('state')
+            'state': request.POST.get('state'),
+            'image': request.data.get('image'),
+            'city': request.data.get('city')
         }
 
         serializer_data = request.data
@@ -41,7 +47,6 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(request: Request, *args, **kwargs):
-        print('Inside')
         id = kwargs['id_station']
         station = Station.objects.filter(id_station=id).first()
         if station is None:
@@ -72,7 +77,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             if newStationInfo[key] is None:
                 needs.append(key + ' is not in the object, please add it.')
                 
-        if len(needs) is not 0:
+        if len(needs) != 0:
             return Response({
                 "msg": needs,
                 "status": 400

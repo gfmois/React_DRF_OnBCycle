@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import MapComponent from "../Map/MapComponent";
 
+import { FaBicycle } from "react-icons/fa";
+
 export default function StationForm({ visible, item }) {
   const [showMap, setShowMap] = useState(false);
 
@@ -73,6 +75,31 @@ export default function StationForm({ visible, item }) {
           <MapComponent
             item={{ lat: 38.82444274016997, long: -0.6040024707834653 }}
           />
+          <div className="bg-gray-800/40 sticky z-50 w-full p-3 h-[25%] bottom-0 sm:hidden rounded-t-3xl">
+            <div className="p-4 w-full h-full">
+              <div className="station_info flex justify-between">
+                <div>
+                  <h2 className="text-white text-lg">Av. Cristóbal Colón</h2>
+                  <p className="text-sm text-white/70">Ontinyent</p>
+                </div>
+                <span
+                  className={
+                    true
+                      ? "flex w-4 h-4 bg-green-500 rounded-full"
+                      : "flex w-4 h-4 bg-red-500 rounded-full"
+                  }
+                />
+              </div>
+              <div className="station_info_slots flex flex-row flex-wrap items-center justify-center h-[70%] w-full p-1 gap-4 mt-2">
+                <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full">
+                  <FaBicycle color="black" size="3.5rem" />
+                  <p className="text-black text-xl font-bold">3</p>
+                </div>
+                <div className="flex-1 bg-gray-200 text-center h-full rounded-full"></div>
+                <div className="flex-1 bg-gray-200 text-center h-full rounded-full"></div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>

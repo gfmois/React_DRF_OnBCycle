@@ -6,6 +6,8 @@ class Station(models.Model):
     name = models.CharField(max_length=60)
     lat = models.CharField(max_length=255)
     long = models.CharField(max_length=255)
+    image = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
     capacity = models.IntegerField()
     state = models.BooleanField(default=True)
     

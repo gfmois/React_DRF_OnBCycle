@@ -3,8 +3,7 @@ import { HiMap } from "react-icons/hi";
 import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-export default function StationsListItems() {
-  const items = [0, 0, 0, 0];
+export default function StationsListItems({ stations, changeFormStatus }) {
   const control = useAnimation();
   const animateVariant = {
     enter: {
@@ -25,9 +24,9 @@ export default function StationsListItems() {
     //! Animation Test
     <motion.div
       className="bg-[#F3F4FD] dark:bg-[#121212]"
-      initial="enter"
-      variants={animateVariant}
-      animate={control}
+      // initial="enter"
+      // variants={animateVariant}
+      // animate={control}
     >
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="flex justify-between">
@@ -44,8 +43,8 @@ export default function StationsListItems() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {items.map((e, i) => (
-            <StationItem key={i} />
+          {stations.map((e, i) => (
+            <StationItem changeFormStatus={changeFormStatus} station={e} key={i} />
           ))}
         </div>
       </div>
