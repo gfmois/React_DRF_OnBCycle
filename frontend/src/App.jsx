@@ -9,7 +9,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Header />
+    <Header />
       <Routes>
         <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
           <Route path="/">
