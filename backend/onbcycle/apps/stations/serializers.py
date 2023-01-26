@@ -4,7 +4,7 @@ from .models import Station
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ( 'id_station', 'name', 'lat', 'long', 'capacity', 'state', 'city', 'image' )
+        fields = ( 'id_station', 'name', 'lat', 'long', 'capacity', 'status', 'city', 'image' )
         
     def to_station(instance: Station):
         return {
@@ -13,7 +13,7 @@ class StationSerializer(serializers.ModelSerializer):
             "lat": instance.lat,
             "long": instance.long,
             "capacity": instance.capacity,
-            "state": instance.state,
+            "status": instance.status,
             'city': instance.city,
             'image': instance.image
         }

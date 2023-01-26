@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import StatusComponent from "../StatusCompononet";
 
 export default function StationItem({ station, changeFormStatus }) {
   const changeFormVisibility = (status) => {
     changeFormStatus(status, station);
   };
-  
+
   return (
     <div className="group relative">
       <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
@@ -19,11 +20,14 @@ export default function StationItem({ station, changeFormStatus }) {
       <div className="mt-4 flex justify-between">
         <div className="ml-2">
           <h3 className="text-sm text-gray-700">
-            <div onClick={changeFormVisibility(true)}
-              // to={`/stations/${station.id_station}`}
+            <div
+              onClick={() => changeFormVisibility(true)}
               className="dark:text-[#F3F4FD]/90"
             >
-              <span aria-hidden="true" className="absolute inset-0"></span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 cursor-pointer"
+              ></span>
               {station.name}
             </div>
           </h3>
@@ -32,15 +36,9 @@ export default function StationItem({ station, changeFormStatus }) {
           </p>
         </div>
         <p className="text-sm font-medium text-gray-900 mr-3">
-          <span
-            className={
-              station.state
-                ? "flex w-3 items-center h-3 bg-green-500 rounded-full"
-                : "flex w-3 items-center h-3 bg-red-500 rounded-full"
-            }
-          >
+          <StatusComponent status={station.status}>
             <AnimatePresence>
-              {station.state && (
+              {true && (
                 <motion.span
                   key="stateBox"
                   initial={{ scale: 0.5, opacity: 1 }}
@@ -61,7 +59,7 @@ export default function StationItem({ station, changeFormStatus }) {
                 />
               )}
             </AnimatePresence>
-          </span>
+          </StatusComponent>
         </p>
       </div>
     </div>

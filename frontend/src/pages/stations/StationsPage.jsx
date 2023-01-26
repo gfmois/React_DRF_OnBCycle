@@ -14,7 +14,11 @@ export default function StationsPage() {
   };
 
   return formActived ? (
-    <StationForm item={station} visible={formActived} />
+    <StationForm
+      item={station}
+      visible={formActived}
+      changeFormVisibility={changeFormStatus}
+    />
   ) : (
     <StationsListItems
       changeFormStatus={changeFormStatus}

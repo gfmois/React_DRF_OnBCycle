@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import MapComponent from "../Map/MapComponent";
 
 import { FaBicycle } from "react-icons/fa";
+import StatusComponent from "../StatusCompononet";
 
-export default function StationForm({ visible, item }) {
+export default function StationForm({ visible, item, changeFormVisibility }) {
   const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
@@ -18,9 +19,9 @@ export default function StationForm({ visible, item }) {
   return visible ? (
     <div className="h-[100vh] flex flex-col xs:items-center md:items-start justify-center">
       <div className="flex items-center justify-center mt-1">
-        <Link
-          to="/"
-          className="xs:absolute xs:top-20 xs:z-50 xs:bg-black sm:z-0 sm:bg-transparent sm:static flex gap-4 items-center justify-center ml-6 text-[#2d2d2d] dark:text-white bg-transparent border border-[#2d2d2d] dark:border-white focus:ring-4 focus:ring-[#2d2d2d] rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-white"
+        <div
+          onClick={() => changeFormVisibility(false)}
+          className="xs:absolute xs:top-20 xs:z-50 xs:bg-black sm:z-0 sm:bg-transparent sm:static flex gap-4 items-center justify-center ml-6 text-[#2d2d2d] dark:text-white bg-transparent border border-[#2d2d2d] dark:border-white focus:ring-4 focus:ring-[#2d2d2d] rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-white cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,10 +38,10 @@ export default function StationForm({ visible, item }) {
             />
           </svg>
           Back
-        </Link>
+        </div>
       </div>
 
-      <div className="xs:w-screen xs:h-screen md:w-full md:p-8 md:h-full grid grid-cols-1 xs:gap-2 md:gap-4 md:grid-cols-2">
+      <div className="xs:w-screen xs:h-screen md:w-full sm:p-8 md:h-full grid grid-cols-1 xs:gap-2 md:gap-4 md:grid-cols-2">
         <motion.div
           className="xs:hidden sm:flex sm:flex-col w-full h-[85%] bg-rose-600 rounded-lg p-6"
           initial={{ x: -1000, y: 1000 }}
@@ -49,7 +50,11 @@ export default function StationForm({ visible, item }) {
             duration: 0.75,
           }}
         >
-          <div className="border border-white w-full h-1/2 mb-1"></div>
+          <div className="border border-white w-full h-1/2 p-2 mb-1">
+            <div className="w-full h-full bg-blue-500">
+
+            </div>
+          </div>
           <div className="border border-black w-full h-1/2 mt-1">
             <div className="flex xs:flex-col sm:flex-row sm:gap-4 xs:gap-1 xs:bg-blue-500 sm:bg-rose-700 md:gap-5 p-6 items-center w-full h-full justify-center">
               <div className="border border-black rounded-full xs:w-16 xs:h-16 w-1/2 h-full p-6 flex items-center justify-center">
@@ -73,22 +78,16 @@ export default function StationForm({ visible, item }) {
           }}
         >
           <MapComponent
-            item={{ lat: 38.82444274016997, long: -0.6040024707834653 }}
+            item={item}
           />
           <div className="bg-gray-800/40 sticky z-50 w-full p-3 h-[25%] bottom-0 sm:hidden rounded-t-3xl">
             <div className="p-4 w-full h-full">
               <div className="station_info flex justify-between">
                 <div>
-                  <h2 className="text-white text-lg">Av. Cristóbal Colón</h2>
-                  <p className="text-sm text-white/70">Ontinyent</p>
+                  <h2 className="text-white text-lg">{ item.name }</h2>
+                  <p className="text-sm text-white/70">{ item.city }</p>
                 </div>
-                <span
-                  className={
-                    true
-                      ? "flex w-4 h-4 bg-green-500 rounded-full"
-                      : "flex w-4 h-4 bg-red-500 rounded-full"
-                  }
-                />
+                <StatusComponent status={item.status} />
               </div>
               <div className="station_info_slots flex flex-row flex-wrap items-center justify-center h-[70%] w-full p-1 gap-4 mt-2">
                 <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full">

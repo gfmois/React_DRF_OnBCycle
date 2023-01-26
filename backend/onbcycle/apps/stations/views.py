@@ -30,7 +30,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'lat': request.POST.get('lat'),
             'long': request.POST.get('long'),
             'capacity': request.POST.get('capacity'),
-            'state': request.POST.get('state'),
+            'status': request.POST.get('status'),
             'image': request.data.get('image'),
             'city': request.data.get('city')
         }
@@ -69,7 +69,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'lat': request.data.get('lat'),
             'long': request.data.get('long'),
             'capacity': request.data.get('capacity'),
-            'state': request.data.get('state') or 0,
+            'status': request.data.get('status') or 0,
         }
         
         needs = []
