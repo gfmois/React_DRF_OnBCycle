@@ -22,6 +22,13 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     def getStation(self, *args, **kwargs):
         serializer = StationSerializer.getStationById(self, kwargs['id_station'])
         return Response(serializer)
+    
+    def getStationSlots(self, *args, **kwargs):
+        return "a"
+    
+    def getModelCols(self, request):
+        serializer = StationSerializer.getModelCols()
+        return Response(serializer, status=status.HTTP_200_OK)
 
     def create(self, request: Request):    
         serializer_context = {
@@ -32,7 +39,8 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'capacity': request.POST.get('capacity'),
             'status': request.POST.get('status'),
             'image': request.data.get('image'),
-            'city': request.data.get('city')
+            'city': request.data.get('city'),
+            'type': request.data.get('type')
         }
 
         serializer_data = request.data
@@ -70,6 +78,9 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'long': request.data.get('long'),
             'capacity': request.data.get('capacity'),
             'status': request.data.get('status') or 0,
+            'city': request.data.get('city'),
+            'image': request.data.get('image'),
+            'type': request.data.get('type')
         }
         
         needs = []

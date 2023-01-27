@@ -9,6 +9,7 @@ class Station(models.Model):
     image = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     capacity = models.IntegerField()
+    type = models.CharField(max_length=60)
     status = models.BooleanField(default=True)
     
     def __str__(self):

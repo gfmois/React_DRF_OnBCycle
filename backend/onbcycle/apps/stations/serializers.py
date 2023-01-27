@@ -4,7 +4,7 @@ from .models import Station
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ( 'id_station', 'name', 'lat', 'long', 'capacity', 'status', 'city', 'image' )
+        fields = ( 'id_station', 'name', 'lat', 'long', 'capacity', 'status', 'city', 'image', 'type' )
         
     def to_station(instance: Station):
         return {
@@ -15,7 +15,8 @@ class StationSerializer(serializers.ModelSerializer):
             "capacity": instance.capacity,
             "status": instance.status,
             'city': instance.city,
-            'image': instance.image
+            'image': instance.image,
+            'type': instance.type
         }
         
     def read():
@@ -34,6 +35,14 @@ class StationSerializer(serializers.ModelSerializer):
             "msg": "Station not found or not exists",
             "status": 400
         }
+        
+    def getModelCols():
+        cols = []
+        for item in Station.objects.raw('SELECT 1 id_station, COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"'):
+            print(item)
+            cols.append(item)
+            
+        return cols
     
     def create(self, validate_data):
         station = Station.objects.create(**validate_data)

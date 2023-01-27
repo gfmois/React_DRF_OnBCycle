@@ -11,9 +11,7 @@ export default function MapComponent({ item }) {
       }}
       mapStyle="mapbox://styles/mapbox/streets-v12"
     >
-      <Marker longitude={item.long} latitude={item.lat} anchor="top">
-        {/* <img src="./pin.png" /> */}
-      </Marker>
+      <Marker longitude={item.long} latitude={item.lat} anchor="top" color="red" />
     </Map>
   );
 }

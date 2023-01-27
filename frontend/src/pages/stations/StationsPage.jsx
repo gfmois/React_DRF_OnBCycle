@@ -1,7 +1,8 @@
 import StationsListItems from "../../components/Stations/StationsListItems";
-import StationForm from "../../components/Stations/StationForm";
+import StationDetails from "../../components/Stations/StationDetails";
 import { useStations } from "../../hooks/useStation";
 import { useState } from "react";
+import FormModalComponent from "../../components/FormModalComponent";
 
 export default function StationsPage() {
   const { stations, getStations } = useStations();
@@ -13,16 +14,18 @@ export default function StationsPage() {
     setStation(station);
   };
 
-  return formActived ? (
-    <StationForm
-      item={station}
-      visible={formActived}
-      changeFormVisibility={changeFormStatus}
-    />
-  ) : (
-    <StationsListItems
-      changeFormStatus={changeFormStatus}
-      stations={stations}
-    />
-  );
+  return <FormModalComponent />
+
+  // return formActived ? (
+  //   <StationDetails
+  //     item={station}
+  //     visible={formActived}
+  //     changeFormVisibility={changeFormStatus}
+  //   />
+  // ) : (
+  //   <StationsListItems
+  //     changeFormStatus={changeFormStatus}
+  //     stations={stations}
+  //   />
+  // );
 }
