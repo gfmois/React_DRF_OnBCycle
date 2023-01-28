@@ -2,8 +2,12 @@ import StationItem from "./StationItem";
 import { HiMap } from "react-icons/hi";
 import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
+import FormModalComponent from "../../components/FormModalComponent";
+import { useStations } from "../../hooks/useStation";
 
 export default function StationsListItems({ stations, changeFormStatus }) {
+  console.log('Inside Stations List');
+  // const { cols } = useStations();
   const control = useAnimation();
   const animateVariant = {
     enter: {
@@ -28,6 +32,7 @@ export default function StationsListItems({ stations, changeFormStatus }) {
       // variants={animateVariant}
       // animate={control}
     >
+      {/* <FormModalComponent cols={cols} /> */}
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-[#F3F4FD] uppercase">

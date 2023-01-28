@@ -1,5 +1,4 @@
 export default function StatusComponent({ status }) {
-    console.log(status);
   return (
     <span
       className={
