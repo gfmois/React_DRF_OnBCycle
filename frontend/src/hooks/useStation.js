@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import StationService from "../services/StationService";
+import StationsContext from "../context/StationsContext"
 
 export function useStations() {
-    const [stations, setStations] = useState([])
+    const [stations, setStations] = useContext(StationsContext)
 
     useEffect(() => {
         StationService.getALlStations()
