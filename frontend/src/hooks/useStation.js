@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useReducer, useState } from "react";
+import StationsContext from "../context/StationsContext";
 import StationService from "../services/StationService";
-import StationsContext from "../context/StationsContext"
 
 export function useStations() {
     const {stations, setStations} = useContext(StationsContext)
