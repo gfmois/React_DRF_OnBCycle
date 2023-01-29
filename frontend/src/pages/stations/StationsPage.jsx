@@ -5,7 +5,6 @@ import { useReducer, useState } from "react";
 
 export default function StationsPage() {
   const { stations, getStations } = useStations();
-
   const [state, dispatch] = useReducer(
     (state, action) => {
       if (action.type == "CHANGE_FORM") {
@@ -21,20 +20,24 @@ export default function StationsPage() {
     { formActived: false, station: {} }
   );
 
-  console.log("inside Stations Page");
-  console.log(state);
-
   const changeFormStatus = (actived, station) => {
-    dispatch({ type: 'CHANGE_FORM', formActived: actived, station  })
-  }
+    dispatch({ type: "CHANGE_FORM", formActived: actived, station });
+  };
 
-  return state.formActived ? (
-    <StationDetails
-      item={state.station}
-      visible={state.formActived}
-      changeFormVisibility={changeFormStatus}
-    />
-  ) : (
-    <StationsListItems changeFormStatus={changeFormStatus} stations={[]} />
+  return (
+    <div className="h-screen w-screen">
+      {state.formActived ? (
+        <StationDetails
+          item={state.station}
+          visible={state.formActived}
+          changeFormVisibility={changeFormStatus}
+        />
+      ) : (
+        <StationsListItems
+          changeFormStatus={changeFormStatus}
+          stations={stations}
+        />
+      )}
+    </div>
   );
 }

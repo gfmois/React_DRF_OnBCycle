@@ -6,6 +6,9 @@ const StationService = {
     },
     getStationCols() {
         return Http().get('stations/cols')
+    },
+    addStation(station) {
+        return Http().post('stations/add', station)
     }
 }
 

@@ -3,15 +3,14 @@ import StationsContext from "../context/StationsContext";
 import StationService from "../services/StationService";
 
 export function useStations() {
-    const {stations, setStations} = useContext(StationsContext)
+    const { stations, setStations } = useContext(StationsContext)
     const [cols, setCols] = useState([])
 
     const getStations = useCallback(
         () => {
             StationService.getALlStations()
                 .then(({ data }) => {
-                    console.log('Inside stations Hook');
-                    setStations(data)
+                    setStations(data);
                 })
                 .catch((e) => console.log(e))
         },
@@ -22,12 +21,11 @@ export function useStations() {
         () => {
             StationService.getStationCols()
                 .then(({ data }) => {
-                    console.log('Inside Cols Hook');
                     setCols(data)
                 })
                 .catch((e) => console.log(e))
         },
-        [ setCols ]
+        [setCols]
     )
 
     useEffect(

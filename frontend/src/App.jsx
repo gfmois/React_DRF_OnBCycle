@@ -5,30 +5,31 @@ import "./App.css";
 import React, { Suspense } from "react";
 import StationDetails from "./components/stations/StationDetails";
 
+// Context
+import { StationContextProvider } from "./context/StationsContext";
+import LoadingComponent from "./components/Layout/LoadingComponent";
 
 export default function App() {
   const Home = React.lazy(() => import("./pages/home/HomePage"));
   const Stations = React.lazy(() => import("./pages/stations/StationsPage"));
 
+  {
+    /* TODO: Make Loading Component */
+  }
   return (
     <BrowserRouter>
-      <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
-        {/* TODO: Make Loading Component */}
-        <Suspense fallback={<div>Loading</div>}>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/stations" element={<Stations />} />
-          </Routes>
-        </Suspense>
-      </div>
+      <StationContextProvider>
+        <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
+          <Suspense fallback={<LoadingComponent/>}>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/stations" element={<Stations />} />
+              <Route path="/loading" element={<LoadingComponent />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </StationContextProvider>
     </BrowserRouter>
   );
-}
-
-{
-  /* <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
-<Header/>
-<HomePage/>
-</div> */
 }
