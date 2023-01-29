@@ -1,25 +1,48 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useReducer, useState } from "react";
 import StationService from "../services/StationService";
 import StationsContext from "../context/StationsContext"
 
 export function useStations() {
-    const [stations, setStations] = useContext(StationsContext)
+    const {stations, setStations} = useContext(StationsContext)
+    const [cols, setCols] = useState([])
 
-    useEffect(() => {
-        StationService.getALlStations()
-            .then(({data}) => {
-                setStations(data)
-            })
-            .catch((e) => console.log(e))
-    }, [ setStations ])
+    const getStations = useCallback(
+        () => {
+            StationService.getALlStations()
+                .then(({ data }) => {
+                    console.log('Inside stations Hook');
+                    setStations(data)
+                })
+                .catch((e) => console.log(e))
+        },
+        [stations]
+    )
 
-    const getStations = useCallback(() => {
-        StationService.getALlStations()
-            .then(({ data }) => {
-                setStations(data)
-            })
-            .catch((e) => console.log(e))
-    }, [ stations ])
+    const getStationsCols = useCallback(
+        () => {
+            StationService.getStationCols()
+                .then(({ data }) => {
+                    console.log('Inside Cols Hook');
+                    setCols(data)
+                })
+                .catch((e) => console.log(e))
+        },
+        [ setCols ]
+    )
 
-    return { stations, getStations }
+    useEffect(
+        () => {
+            getStationsCols()
+        },
+        []
+    )
+
+    useEffect(
+        () => {
+            getStations()
+        },
+        []
+    )
+
+    return { stations, cols, getStations, getStationsCols }
 }

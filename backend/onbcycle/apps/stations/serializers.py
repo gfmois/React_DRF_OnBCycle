@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import connection
 from .models import Station
 
 class StationSerializer(serializers.ModelSerializer):
@@ -37,11 +38,15 @@ class StationSerializer(serializers.ModelSerializer):
         }
         
     def getModelCols():
+        #TODO Parse types in server?
+        # TODO Use model instead the raw query?
         cols = []
-        for item in Station.objects.raw('SELECT 1 id_station, COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"'):
-            print(item)
-            cols.append(item)
-            
+
+        with connection.cursor() as c:
+            c.execute('SELECT COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"')
+            for item in list(c.fetchall()):
+                cols.append(item)
+                
         return cols
     
     def create(self, validate_data):
