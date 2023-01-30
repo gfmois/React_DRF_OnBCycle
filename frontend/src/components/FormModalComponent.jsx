@@ -1,13 +1,18 @@
 import React from "react";
 import ButtonComponent from "./Layout/ButtonComponent";
 import { useForm } from "react-hook-form";
-import { motion } from "framer-motion";
+import MapComponent from "./Map/MapComponent";
+import { useState } from "react";
+import { BiArrowBack } from "react-icons/bi";
 
 // TODO: Check why Component re-rendes when input gets value
 // TODO: Modal not takes all width of inputs on render
 // TODO: Component it's like new page, no over the content
 
-export default function FormModalComponent({ cols, changeVisibility, action  }) {
+export default function FormModalComponent({ cols, changeVisibility, action }) {
+  const [isMapVisible, setMapVisible] = useState(false);
+  const [markerItem, setMarkerItem] = useState()
+
   const {
     register,
     handleSubmit,
@@ -15,8 +20,15 @@ export default function FormModalComponent({ cols, changeVisibility, action  }) 
   } = useForm();
 
   const onSubmit = (data) => {
-    action(data)
+    action(data);
   };
+
+  const getLngLat = (e) => {
+    setMarkerItem({
+      lat: e.lngLat.lat,
+      long: e.lngLat.lng
+    })
+  }
 
   /* 
     Example of objtect to pass the component
@@ -50,9 +62,30 @@ export default function FormModalComponent({ cols, changeVisibility, action  }) 
     };
   });
 
-  return (
+  return isMapVisible ? (
+    <div className="h-screen w-screen dark:bg-[#2d2d2d] absolute z-50">
+      <div className="flex items-center justify-center">
+        <div className="absolute z-50 top-3 hover:animate-pulse">
+          <ButtonComponent
+            action={() => setMapVisible(false)}
+            style="custom"
+            text="Back"
+            addStyle="!bg-black/40 !text-white/90 !border border-black !text-center flex flex-row-reverse items-center gap-2 !justify-between"
+          >
+            <BiArrowBack />
+          </ButtonComponent>
+        </div>
+      </div>
+      <MapComponent
+        action={getLngLat}
+        loaded={setMapVisible}
+        item={markerItem}
+        initial={{ lat: 39.44312953093019, long: -0.5391206652999816 }}
+        zoom="10"
+      />
+    </div>
+  ) : (
     <div className="wrapper z-50">
-      <div className="blur_ w-full h-full"></div>
       <div className="h-full w-full z-50 absolute flex justify-center top-20 right-0 left-0 bottom-0">
         <div className="border-[3px] border-[#3f3f3f] dark:bg-[#212121] bg-red-700 w-3/4 h-1/2 rounded-xl">
           <form className="w-full h-full grid gap-6 grid-cols-1 sm:grid-cols-2 p-2">
@@ -102,6 +135,11 @@ export default function FormModalComponent({ cols, changeVisibility, action  }) 
               );
             })}
             <div className="btns w-full h-full flex justify-end items-end">
+              <ButtonComponent
+                text="Open Maps"
+                action={() => setMapVisible(true)}
+                style="green"
+              />
               <ButtonComponent
                 text="Save"
                 action={handleSubmit(onSubmit)}

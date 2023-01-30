@@ -8,7 +8,6 @@ from rest_framework import generics, mixins, status, viewsets
 from rest_framework.permissions import (
     AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 
-
 # Create your views here.
 class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     # permission_classes = (AllowAny)

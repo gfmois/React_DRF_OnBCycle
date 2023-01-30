@@ -12,9 +12,6 @@ export default function App() {
   const Home = React.lazy(() => import("./pages/home/HomePage"));
   const Stations = React.lazy(() => import("./pages/stations/StationsPage"));
 
-  {
-    /* TODO: Make Loading Component */
-  }
   return (
     <BrowserRouter>
       <StationContextProvider>

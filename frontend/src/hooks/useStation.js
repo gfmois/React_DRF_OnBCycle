@@ -37,7 +37,7 @@ export function useStations() {
 
     useEffect(() => { getStationsCols() }, [])
 
-    useEffect(() => { getStations() },[])
+    useEffect(() => { getStations() }, [])
 
     return { stations, cols, getStations, getStationsCols, addStation }
 }

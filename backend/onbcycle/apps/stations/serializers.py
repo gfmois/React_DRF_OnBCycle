@@ -39,7 +39,6 @@ class StationSerializer(serializers.ModelSerializer):
         
     def getModelCols():
         #TODO Parse types in server?
-        # TODO Use model instead the raw query?
         cols = []
 
         with connection.cursor() as c:

@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'onbcycle.apps.stations'
+    'onbcycle.apps.stations',
+    'onbcycle.apps.slots'
 ]
 
 MIDDLEWARE = [
