@@ -1,12 +1,11 @@
 import StationItem from "./StationItem";
 import { HiMap } from "react-icons/hi";
 import FormModalComponent from "../../components/FormModalComponent";
-import { useStations } from "../../hooks/useStation";
 import { useState } from "react";
 
-export default function StationsListItems({ stations, changeFormStatus }) {
+// NOTE: Cols Better here or in the StationPage? 
+export default function StationsListItems({ stations, changeFormStatus, cols, addStation }) {
   const [formModalVisible, setFormModalVisible] = useState(false);
-  const { cols } = useStations();
 
   const changeVisibilityFormModal = (nVisibility) => {
     setFormModalVisible(nVisibility);
@@ -19,6 +18,7 @@ export default function StationsListItems({ stations, changeFormStatus }) {
           <FormModalComponent
             cols={cols}
             changeVisibility={changeVisibilityFormModal}
+            action={addStation}
           />
         ) : (
           ""

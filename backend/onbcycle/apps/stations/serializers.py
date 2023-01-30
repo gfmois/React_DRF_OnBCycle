@@ -46,7 +46,8 @@ class StationSerializer(serializers.ModelSerializer):
             c.execute('SELECT COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"')
             for item in list(c.fetchall()):
                 cols.append(item)
-                
+               
+        cols.pop(0)
         return cols
     
     def create(self, validate_data):

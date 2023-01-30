@@ -32,7 +32,6 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
     def create(self, request: Request):    
         serializer_context = {
-            'id_station': request.POST.get('id_station'),
             'name': request.POST.get('name'),
             'lat': request.POST.get('lat'),
             'long': request.POST.get('long'),

@@ -1,19 +1,22 @@
 import React from "react";
 import ButtonComponent from "./Layout/ButtonComponent";
 import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
 
 // TODO: Check why Component re-rendes when input gets value
 // TODO: Modal not takes all width of inputs on render
 // TODO: Component it's like new page, no over the content
 
-export default function FormModalComponent({ cols, changeVisibility }) {
+export default function FormModalComponent({ cols, changeVisibility, action  }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    action(data)
+  };
 
   /* 
     Example of objtect to pass the component

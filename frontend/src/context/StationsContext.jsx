@@ -8,7 +8,7 @@ export function StationContextProvider({ children }) {
   const [stations, setStations] = useState([]);
 
   useEffect(() => {
-    StationService.getALlStations()
+    StationService.getAllStations()
       .then(({ data }) => {
         setStations(data)
       })

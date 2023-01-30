@@ -1,9 +1,8 @@
 import Header from "./components/Layout/HeaderComponent";
-import HomePage from "./pages/home/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
 import React, { Suspense } from "react";
-import StationDetails from "./components/stations/StationDetails";
+
+import "./App.css";
 
 // Context
 import { StationContextProvider } from "./context/StationsContext";

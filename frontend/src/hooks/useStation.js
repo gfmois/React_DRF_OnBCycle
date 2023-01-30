@@ -8,7 +8,7 @@ export function useStations() {
 
     const getStations = useCallback(
         () => {
-            StationService.getALlStations()
+            StationService.getAllStations()
                 .then(({ data }) => {
                     setStations(data);
                 })
@@ -28,19 +28,16 @@ export function useStations() {
         [setCols]
     )
 
-    useEffect(
-        () => {
-            getStationsCols()
-        },
-        []
-    )
+    const addStation = useCallback((station) => {
+        StationService.addStation(station)
+            .then((e) => {
+                console.log(e);
+            })
+    })
 
-    useEffect(
-        () => {
-            getStations()
-        },
-        []
-    )
+    useEffect(() => { getStationsCols() }, [])
 
-    return { stations, cols, getStations, getStationsCols }
+    useEffect(() => { getStations() },[])
+
+    return { stations, cols, getStations, getStationsCols, addStation }
 }
