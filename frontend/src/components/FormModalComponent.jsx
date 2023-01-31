@@ -11,39 +11,7 @@ import { BiArrowBack } from "react-icons/bi";
 
 export default function FormModalComponent({ cols, changeVisibility, action }) {
   const [isMapVisible, setMapVisible] = useState(false);
-  const [markerItem, setMarkerItem] = useState()
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => {
-    action(data);
-  };
-
-  const getLngLat = (e) => {
-    setMarkerItem({
-      lat: e.lngLat.lat,
-      long: e.lngLat.lng
-    })
-  }
-
-  /* 
-    Example of objtect to pass the component
-    {
-      type: "text",
-      placeholder: "Texto de ejemplo",
-      required: true,
-      id: "t_eje",
-      minLength: 0,
-      maxLength: 12,
-      value: "",
-      label: "Texto",
-      name: "email",
-    }
-  */
+  const [markerItem, setMarkerItem] = useState();
 
   const types = {
     varchar: "text",
@@ -62,6 +30,54 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
     };
   });
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    action(data);
+  };
+
+  const setLngLat = (e) => {
+    getLngLat({
+      lngLat: { lat: e.center[1], lng: e.center[0] },
+    });
+  };
+
+  const getLngLat = (e) => {
+    items.map((i) => {
+      if (i.id == "lat") {
+        i.value = e.lngLat.lat;
+      }
+
+      if (i.id == "long") {
+        i.value = e.lngLat.lng;
+      }
+    });
+
+    setMarkerItem({
+      lat: e.lngLat.lat,
+      long: e.lngLat.lng,
+    });
+  };
+
+  /* 
+    Example of objtect to pass the component
+    {
+      type: "text",
+      placeholder: "Texto de ejemplo",
+      required: true,
+      id: "t_eje",
+      minLength: 0,
+      maxLength: 12,
+      value: "",
+      label: "Texto",
+      name: "email",
+    }
+  */
+
   return isMapVisible ? (
     <div className="h-screen w-screen dark:bg-[#2d2d2d] absolute z-50">
       <div className="flex items-center justify-center">
@@ -77,6 +93,7 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
         </div>
       </div>
       <MapComponent
+        search={true}
         action={getLngLat}
         loaded={setMapVisible}
         item={markerItem}
@@ -106,11 +123,13 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
                       type={item.type}
                       id={item.id}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      value={item.value}
                       placeholder={item.placeholder}
                       {...register(item.name, {
                         required: item.required,
                         minLength: item.minLength,
                         maxLength: item.maxLength,
+                        value: item.value,
                       })}
                       autoComplete="off"
                     />
