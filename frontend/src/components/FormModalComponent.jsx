@@ -12,15 +12,9 @@ import { BiArrowBack } from "react-icons/bi";
 export default function FormModalComponent({ cols, changeVisibility, action }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [markerItem, setMarkerItem] = useState();
-
-  const types = {
-    varchar: "text",
-    int: "number",
-    tinyint: "bool",
-  };
   const items = cols.map((i) => {
     return {
-      type: types[i[1]],
+      type: i[1],
       placeholder: i[0],
       required: true,
       id: i[0],

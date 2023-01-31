@@ -38,13 +38,16 @@ class StationSerializer(serializers.ModelSerializer):
         }
         
     def getModelCols():
-        #TODO Parse types in server?
-        cols = []
+        types = {
+            "varchar": "text",
+            "tinyint": "bool",
+            "int": "number"
+        }
 
         with connection.cursor() as c:
             c.execute('SELECT COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"')
-            for item in list(c.fetchall()):
-                cols.append(item)
+            cols = [(item[0], 'file' if item[0] == 'image' else types[item[1]],) for item in c.fetchall()]
+
                
         cols.pop(0)
         return cols

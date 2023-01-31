@@ -9,6 +9,7 @@ django-cors-headers = "*"
 pymysql = "==1.0.2"
 djangorestframework = "*"
 django-admin = "*"
+pillow = "*"
 
 [dev-packages]
 
