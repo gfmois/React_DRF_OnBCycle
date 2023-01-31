@@ -32,6 +32,7 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -40,20 +41,21 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
     action(data);
   };
 
-  const setLngLat = (e) => {
-    getLngLat({
-      lngLat: { lat: e.center[1], lng: e.center[0] },
-    });
-  };
-
+  // TODO: Pasar todo esto al padre
   const getLngLat = (e) => {
+    if (e.center) {
+      e = {
+        lngLat: { lat: e.center[1], lng: e.center[0] },
+      };
+    }
+
     items.map((i) => {
       if (i.id == "lat") {
-        i.value = e.lngLat.lat;
+        setValue("lat", e.lngLat.lat);
       }
 
       if (i.id == "long") {
-        i.value = e.lngLat.lng;
+        setValue("long", e.lngLat.lng);
       }
     });
 
@@ -123,13 +125,11 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
                       type={item.type}
                       id={item.id}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      value={item.value}
                       placeholder={item.placeholder}
                       {...register(item.name, {
                         required: item.required,
                         minLength: item.minLength,
                         maxLength: item.maxLength,
-                        value: item.value,
                       })}
                       autoComplete="off"
                     />
