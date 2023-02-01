@@ -11,7 +11,25 @@ import { BiArrowBack } from "react-icons/bi";
 
 export default function FormModalComponent({ cols, changeVisibility, action }) {
   const [isMapVisible, setMapVisible] = useState(false);
-  const [markerItem, setMarkerItem] = useState()
+  const [markerItem, setMarkerItem] = useState();
+
+  const types = {
+    varchar: "text",
+    int: "number",
+    tinyint: "bool",
+  };
+
+  const items = cols.map((i) => {
+    return {
+      type: types[i[1]],
+      placeholder: i[0],
+      required: true,
+      id: i[0],
+      value: "",
+      label: i[0],
+      name: i[0],
+    };
+  });
 
   const {
     register,
@@ -26,9 +44,9 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
   const getLngLat = (e) => {
     setMarkerItem({
       lat: e.lngLat.lat,
-      long: e.lngLat.lng
-    })
-  }
+      long: e.lngLat.lng,
+    });
+  };
 
   /* 
     Example of objtect to pass the component
@@ -44,23 +62,6 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
       name: "email",
     }
   */
-
-  const types = {
-    varchar: "text",
-    int: "number",
-    tinyint: "bool",
-  };
-  const items = cols.map((i) => {
-    return {
-      type: types[i[1]],
-      placeholder: i[0],
-      required: true,
-      id: i[0],
-      value: "",
-      label: i[0],
-      name: i[0],
-    };
-  });
 
   return isMapVisible ? (
     <div className="h-screen w-screen dark:bg-[#2d2d2d] absolute z-50">
