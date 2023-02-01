@@ -1,3 +1,5 @@
+import os
+from PIL import Image
 from .models import Station
 from django.shortcuts import render
 from .serializers import StationSerializer
@@ -5,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from rest_framework import generics, mixins, status, viewsets
-from rest_framework.permissions import (
-    AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
+from django.core.files.temp import NamedTemporaryFile
+from ..core.utils import generate_uuid
 
 # Create your views here.
 class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
@@ -19,32 +21,48 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         return Response(serializer)
 
     def getStation(self, *args, **kwargs):
-        serializer = StationSerializer.getStationById(self, kwargs['id_station'])
+        serializer = StationSerializer.getStationById(
+            self, kwargs['id_station'])
         return Response(serializer)
-    
+
     def getStationSlots(self, *args, **kwargs):
         return "a"
-    
+
     def getModelCols(self, request):
         serializer = StationSerializer.getModelCols()
         return Response(serializer, status=status.HTTP_200_OK)
 
-    def create(self, request: Request):    
+    def create(self, request: Request):
+        suffix = "." + request.FILES['file'].name.split('.')[1]
+        img_name = generate_uuid() + suffix
         serializer_context = {
-            'name': request.POST.get('name'),
-            'lat': request.POST.get('lat'),
-            'long': request.POST.get('long'),
-            'capacity': request.POST.get('capacity'),
-            'status': request.POST.get('status'),
-            'image': request.data.get('image'),
+            'name': request.data.get('name'),
+            'lat': request.data.get('lat'),
+            'long': request.data.get('long'),
+            'capacity': request.data.get('capacity'),
+            'status': request.data.get('status'),
+            'image': '/stations/' + img_name,
             'city': request.data.get('city'),
             'type': request.data.get('type')
         }
 
-        serializer_data = request.data
+        try:
+            with Image.open(request.FILES['file']) as img:
+                img.verify()
+        except Exception as e:
+            print(f'Error al abirla imagen: {e}')
+            return Response({ 'msg': 'Error al abrir la imagen', 'status': 'error' }, status=status.HTTP_400_BAD_REQUEST)
+        
+        route = os.path.join(os.path.dirname(os.path.abspath(
+            __file__)), "..") + "/../../../frontend/public/stations/"
+        os.chmod(route, 0o644)
+
+        with open(os.path.join(route, img_name), 'wb') as f:
+            for chunk in request.FILES['file'].chunks():
+                f.write(chunk)
+
         serializer = self.serializer_class(
-            data=serializer_data,
-            context=serializer_context
+            data=serializer_context
         )
 
         serializer.is_valid(raise_exception=True)
@@ -80,30 +98,29 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'image': request.data.get('image'),
             'type': request.data.get('type')
         }
-        
+
         needs = []
         for key in newStationInfo.keys():
             if newStationInfo[key] is None:
                 needs.append(key + ' is not in the object, please add it.')
-                
+
         if len(needs) != 0:
             return Response({
                 "msg": needs,
                 "status": 400
-            }, status = status.HTTP_400_BAD_REQUEST)
-        
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         if station is None:
             return Response({
                 "msg": "The station does not exists",
                 "status": 400
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        
         for key in newStationInfo.keys():
             setattr(station, key, newStationInfo[key])
-        
+
         station.save()
         return Response({
             "msg": "The station has been updated",
             "status": 200
-        }, status = status.HTTP_200_OK)
+        }, status=status.HTTP_200_OK)

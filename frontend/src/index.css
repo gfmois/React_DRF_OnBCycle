@@ -11,3 +11,14 @@ body {
 body::-webkit-scrollbar {
     display: none;
 }
+
+
+.remove-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+.remove-scroll::-webkit-scrollbar {
+    display: none;
+}

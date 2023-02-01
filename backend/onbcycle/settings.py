@@ -102,6 +102,11 @@ DATABASES = {
     }
 }
 
+# Media Configuration
+# MEDIA_ROOT = os.path.join(os.path.dirname(
+#     os.path.abspath(__file__)), "..") + "/../frontend/public"
+
+# MEDIA_URL = '/media/'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

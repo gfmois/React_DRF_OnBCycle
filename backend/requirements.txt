@@ -7,3 +7,4 @@ environ
 django-admin
 django-environ
 pymysql
+Pillow

@@ -12,16 +12,9 @@ import { BiArrowBack } from "react-icons/bi";
 export default function FormModalComponent({ cols, changeVisibility, action }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [markerItem, setMarkerItem] = useState();
-
-  const types = {
-    varchar: "text",
-    int: "number",
-    tinyint: "bool",
-  };
-
   const items = cols.map((i) => {
     return {
-      type: types[i[1]],
+      type: i[1],
       placeholder: i[0],
       required: true,
       id: i[0],
@@ -33,6 +26,7 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -41,7 +35,24 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
     action(data);
   };
 
+  // TODO: Pasar todo esto al padre
   const getLngLat = (e) => {
+    if (e.center) {
+      e = {
+        lngLat: { lat: e.center[1], lng: e.center[0] },
+      };
+    }
+
+    items.map((i) => {
+      if (i.id == "lat") {
+        setValue("lat", e.lngLat.lat);
+      }
+
+      if (i.id == "long") {
+        setValue("long", e.lngLat.lng);
+      }
+    });
+
     setMarkerItem({
       lat: e.lngLat.lat,
       long: e.lngLat.lng,
@@ -78,6 +89,7 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
         </div>
       </div>
       <MapComponent
+        search={true}
         action={getLngLat}
         loaded={setMapVisible}
         item={markerItem}

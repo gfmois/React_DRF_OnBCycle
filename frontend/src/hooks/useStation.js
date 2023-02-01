@@ -29,7 +29,15 @@ export function useStations() {
     )
 
     const addStation = useCallback((station) => {
-        StationService.addStation(station)
+        const formData = new FormData()
+        formData.append('file', station.image[0])
+        Object.keys(station).map((k) => {
+            if (k != 'image') {
+                formData.append(k, station[k])
+            }
+        })
+        
+        StationService.addStation(formData)
             .then((e) => {
                 console.log(e);
             })
