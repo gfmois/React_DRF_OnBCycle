@@ -24,12 +24,9 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         serializer = StationSerializer.getStationById(
             self, kwargs['id_station'])
         return Response(serializer)
-
-    def getStationSlots(self, *args, **kwargs):
-        return "a"
     
-    def getStationInfo(self, *args, **kwargs):
-        serializer = StationSerializer.getStationInfo(kwargs['id_station'])
+    def get_station_info(self, *args, **kwargs):
+        serializer = StationSerializer.get_station_info(kwargs['id_station'])
         return Response(serializer, status=status.HTTP_200_OK)
 
     def getModelCols(self, request):

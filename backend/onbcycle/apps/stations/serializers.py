@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.db import connection
 from .models import Station
+from ..slots.serializers import SlotSerializer
 
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,4 +55,10 @@ class StationSerializer(serializers.ModelSerializer):
     
     def create(self, validate_data):
         station = Station.objects.create(**validate_data)
+        return station
+    
+    def get_station_info(id_station):
+        station = StationSerializer.getStationById(id_station)
+        station = {**station, 'slots': SlotSerializer.getStationSlots(id_station)}
+
         return station

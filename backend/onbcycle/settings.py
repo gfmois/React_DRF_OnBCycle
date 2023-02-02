@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'onbcycle.apps.stations',
-    'onbcycle.apps.slots'
+    'onbcycle.apps.slots',
+    'onbcycle.apps.bikes'
 ]
 
 MIDDLEWARE = [

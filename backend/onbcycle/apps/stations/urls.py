@@ -8,5 +8,7 @@ urlpatterns = [
     path('update/<str:id_station>', StationView.as_view({ 'put': 'update' })),
     path('cols', StationView.as_view({ 'get': 'getModelCols' })),
     path('<str:id_station>', StationView.as_view({ 'get': 'getStation' })),
+    path('info/<str:id_station>', StationView.as_view({ 'get': 'get_station_info' })),
+
 ]
 

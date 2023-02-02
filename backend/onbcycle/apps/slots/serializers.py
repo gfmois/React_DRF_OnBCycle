@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from django.core import serializers as coreserializers
 from django.db import connection
 from .models import Slot
-from ..stations.serializers import StationSerializer
+from ..bikes.serializers import BikeSerializer
+
 
 class SlotSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,13 +14,14 @@ class SlotSerializer(serializers.ModelSerializer):
             'id_slot': instance.id_slot,
             'state': instance.state
         }
-        
+
         if showStationId:
             slot['id_station'] = instance.id_station,
-        
+
         return slot
 
     def getStationSlots(id_station):
-        slots = [SlotSerializer.to_slot(slot, False) for slot in Slot.objects.filter(id_station=id_station)]
-        
+        slots = [{**SlotSerializer.to_slot(slot, False), 'bike': BikeSerializer.get_bike_from_slot(
+            slot.id_slot)} for slot in Slot.objects.filter(id_station=id_station)]
+
         return slots
