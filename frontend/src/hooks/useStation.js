@@ -5,6 +5,7 @@ import StationService from "../services/StationService";
 export function useStations() {
     const { stations, setStations } = useContext(StationsContext)
     const [cols, setCols] = useState([])
+    const [station, setStation] = useState({})
 
     const getStations = useCallback(
         () => {
@@ -43,9 +44,17 @@ export function useStations() {
             })
     })
 
+    const getAllStation = useCallback((stationID) => {
+        StationService.getFullStation(stationID)
+            .then(({ data }) => {
+                setStation(data)
+            })
+            .catch((e) => console.log(e))
+    }, [setStation])
+
     useEffect(() => { getStationsCols() }, [])
 
     useEffect(() => { getStations() }, [])
 
-    return { stations, cols, getStations, getStationsCols, addStation }
+    return { stations, station, cols, getStations, getStationsCols, addStation, getAllStation }
 }

@@ -13,6 +13,9 @@ const StationService = {
                 'Content-Type': 'multipart/form-data'
             }
         })
+    },
+    getFullStation(stationID) {
+        return Http().get(`stations/info/${stationID}`)
     }
 }
 

@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('stations/', include('onbcycle.apps.stations.urls')),
     path('slots/', include('onbcycle.apps.slots.urls')),
-    path('bikes/', include('onbcycle.apps.bikes.urls'))
+    path('bikes/', include('onbcycle.apps.bikes.urls')),
+    path('rents/', include('onbcycle.apps.rents.urls')),
 ]

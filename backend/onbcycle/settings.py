@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'onbcycle.apps.stations',
     'onbcycle.apps.slots',
-    'onbcycle.apps.bikes'
+    'onbcycle.apps.bikes',
+    'onbcycle.apps.rents'
 ]
 
 MIDDLEWARE = [

@@ -3,11 +3,13 @@ from django.db import connection
 from .models import Station
 from ..slots.serializers import SlotSerializer
 
+
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ( 'id_station', 'name', 'lat', 'long', 'capacity', 'status', 'city', 'image', 'type' )
-        
+        fields = ('id_station', 'name', 'lat', 'long',
+                  'capacity', 'status', 'city', 'image', 'type')
+
     def to_station(instance: Station):
         return {
             "id_station": instance.id_station,
@@ -20,14 +22,13 @@ class StationSerializer(serializers.ModelSerializer):
             'image': instance.image,
             'type': instance.type
         }
-        
+
     def read():
-        stations = []
-        for station in Station.objects.all():
-            stations.append(StationSerializer.to_station(station))
-            
+        stations = [{**StationSerializer.to_station(station), 'slots': SlotSerializer.getStationSlots(
+            station.id_station)} for station in Station.objects.all()]
+
         return stations
-    
+
     def getStationById(id_station):
         station = Station.objects.filter(id_station=id_station).first()
         if station is not None:
@@ -37,7 +38,7 @@ class StationSerializer(serializers.ModelSerializer):
             "msg": "Station not found or not exists",
             "status": 400
         }
-        
+
     def getModelCols():
         types = {
             "varchar": "text",
@@ -46,19 +47,21 @@ class StationSerializer(serializers.ModelSerializer):
         }
 
         with connection.cursor() as c:
-            c.execute('SELECT COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"')
-            cols = [(item[0], 'file' if item[0] == 'image' else types[item[1]],) for item in c.fetchall()]
+            c.execute(
+                'SELECT COLUMN_NAME as name, DATA_TYPE as type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "stations_station"')
+            cols = [(item[0], 'file' if item[0] == 'image' else types[item[1]],)
+                    for item in c.fetchall()]
 
-               
         cols.pop(0)
         return cols
-    
+
     def create(self, validate_data):
         station = Station.objects.create(**validate_data)
         return station
-    
+
     def get_station_info(id_station):
         station = StationSerializer.getStationById(id_station)
-        station = {**station, 'slots': SlotSerializer.getStationSlots(id_station)}
+        station = {**station,
+                   'slots': SlotSerializer.getStationSlots(id_station)}
 
         return station
