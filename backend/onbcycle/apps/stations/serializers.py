@@ -27,7 +27,7 @@ class StationSerializer(serializers.ModelSerializer):
             
         return stations
     
-    def getStationById(self, id_station):
+    def getStationById(id_station):
         station = Station.objects.filter(id_station=id_station).first()
         if station is not None:
             return StationSerializer.to_station(station)

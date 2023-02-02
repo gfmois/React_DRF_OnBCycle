@@ -10,5 +10,5 @@ class SlotView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Slot.objects.all()
     
     def getStationSlots(self, request, *args, **kwargs):
-        serializer = SlotSerializer.getStationSlots(self, kwargs['id_station'])
+        serializer = SlotSerializer.getStationSlots(kwargs['id_station'])
         return Response(serializer)

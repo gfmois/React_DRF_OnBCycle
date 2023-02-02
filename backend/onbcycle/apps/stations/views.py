@@ -27,6 +27,10 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
     def getStationSlots(self, *args, **kwargs):
         return "a"
+    
+    def getStationInfo(self, *args, **kwargs):
+        serializer = StationSerializer.getStationInfo(kwargs['id_station'])
+        return Response(serializer, status=status.HTTP_200_OK)
 
     def getModelCols(self, request):
         serializer = StationSerializer.getModelCols()
@@ -46,6 +50,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'type': request.data.get('type')
         }
 
+        #? ASK -> This must be in the serializer? 
         try:
             with Image.open(request.FILES['file']) as img:
                 img.verify()
