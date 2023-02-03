@@ -26,3 +26,21 @@ class SlotSerializer(serializers.ModelSerializer):
             slot.id_slot)} for slot in Slot.objects.filter(id_station=id_station)]
 
         return slots
+
+    def rent_bike_slot(id_slot):
+        slot = Slot.objects.filter(id_slot=id_slot)
+
+        if slot.first().bike is None:
+            return {
+                'msg': 'Hubo un error al realizar la reserva',
+                'status': 400
+            }
+
+        bike = slot.first().bike.id_bike
+        if slot.update(bike=None):
+            return bike
+
+        return {
+            'msg': 'Hubo un error al realizar la reserva',
+            'status': 400
+        }

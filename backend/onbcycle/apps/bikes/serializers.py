@@ -15,5 +15,3 @@ class BikeSerializer(serializers.ModelSerializer):
             'id_bike': instance.id_bike,
             'status': instance.status
         }
-        
-        # TODO: Functions

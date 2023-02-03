@@ -11,8 +11,4 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     
     def rent_bike(self, request, *args, **kwargs):
         rent = RentSerializer.rent_bike(kwargs['id_slot'])
-        if rent:
-            return Response({
-                'status': 200,
-                'msg': 'Todo bien'
-            })
+        return Response(rent)
