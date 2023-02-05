@@ -1,6 +1,7 @@
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const control = useAnimation()
@@ -56,22 +57,21 @@ export default function HomePage() {
                 </strong>
               </h1>
               <p className="mt-4 max-w-lg sm:text-xl sm:leading-relaxed xs:text-black/70 sm:text-white">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Nesciunt illo tenetur fuga ducimus numquam ea!
+                Welcome to OnBCycle, the application that will allow you to enjoy your city in a sustainable and comfortable way.
               </p>
               <div className="mt-8 flex flex-wrap gap-4 text-center">
-                <a
+                <Link to={"/auth"}
                   href="#"
                   className="block w-full rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-rose-700 focus:outline-none focus:ring active:bg-rose-500 sm:w-auto"
                 >
                   Get Started
-                </a>
-                <a
+                </Link>
+                <Link to={"/stations"}
                   href=""
                   className="block w-full rounded dark:bg-[#212121] bg-white px-12 py-3 text-sm font-medium text-rose-600 shadow hover:text-rose-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto"
                 >
-                  Learn More
-                </a>
+                  Our Stations
+                </Link>
               </div>
             </div>
           </div>

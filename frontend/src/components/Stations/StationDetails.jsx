@@ -7,6 +7,7 @@ import RentBikeModal from "../Bikes/RentBikeModal";
 import { GiDutchBike, GiGreenhouse } from "react-icons/gi";
 import { FaBicycle } from "react-icons/fa";
 import { SlHome } from "react-icons/sl";
+import { CgKeyhole } from "react-icons/cg"
 
 import StatusComponent from "../StatusCompononet";
 
@@ -16,8 +17,7 @@ export default function StationDetails({
   changeFormVisibility,
 }) {
   const [showMap, setShowMap] = useState(false);
-
-  console.log(item);
+  const [isRenting, setIsRenting] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
@@ -99,7 +99,7 @@ export default function StationDetails({
                   {/* Slots */}
                   {item.slots.length}
                 </div>
-                <div className="border border-black rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5 cursor-pointer">
+                <div className="border border-black rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5">
                   <GiDutchBike color="black" size="5rem" />
                   {/* Bicicletas Disponibles */}
                   {/* TODO: Make on click to rent bike */}
@@ -108,9 +108,9 @@ export default function StationDetails({
                       .length
                   }
                 </div>
-                <div className="border border-black rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5">
-                  <FaBicycle color="black" size="5rem" />
-                  5Bicis
+                <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => setIsRenting(true)}>
+                  <CgKeyhole color="black" size="5rem" />
+                  Rent a Bike 
                 </div>
               </div>
             </div>
@@ -147,9 +147,9 @@ export default function StationDetails({
                       }
                     </p>
                   </div>
-                  <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1">
-                    <FaBicycle color="black" size="3.5rem" />
-                    <p className="text-black text-xl font-bold">3</p>
+                  <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1 cursor-pointer">
+                    <CgKeyhole color="black" size="3.5rem" onClick={() => setIsRenting(true)}/>
+                    <p className="text-black text-xs font-bold">Rent a Bike</p>
                   </div>
                 </div>
               </div>
@@ -157,7 +157,7 @@ export default function StationDetails({
           </motion.div>
         </div>
       </div>
-      <RentBikeModal />
+      <RentBikeModal visible={isRenting} action={setIsRenting} />
     </>
   ) : (
     ""

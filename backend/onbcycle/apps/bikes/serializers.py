@@ -15,3 +15,7 @@ class BikeSerializer(serializers.ModelSerializer):
             'id_bike': instance.id_bike,
             'status': instance.status
         }
+        
+    def get_bike_from_slot(id_bike):
+        bike = Bike.objects.filter(id_bike=id_bike).first()
+        return BikeSerializer.to_bike(bike)

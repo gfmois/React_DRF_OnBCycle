@@ -23,7 +23,7 @@ class SlotSerializer(serializers.ModelSerializer):
 
     def getStationSlots(id_station):
         slots = [{**SlotSerializer.to_slot(slot, False), 'bike': BikeSerializer.get_bike_from_slot(
-            slot.id_slot)} for slot in Slot.objects.filter(id_station=id_station)]
+            slot.bike_id)} for slot in Slot.objects.filter(id_station=id_station)]
 
         return slots
 
