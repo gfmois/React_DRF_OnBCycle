@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function Header() {
+  const [isUserDropVisible, setIsUserDropVisible] = useState(false);
+
+  function toggleHidden() {
+    document.getElementById("mobile-menu-2").classList.toggle("hidden");
+  }
+
   return (
-    /* TODO: Mirar Colores que queden bien con el tema claro
-        y mirar colores complementarios para el tema oscuro.
-     */
     <nav className="bg-rose-600 border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-rose-600">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         <a href="http://localhost:5173" className="flex items-center">
@@ -19,6 +23,7 @@ export default function Header() {
         </a>
         <div className="flex items-center md:order-2">
           <button
+            onClick={() => setIsUserDropVisible(!isUserDropVisible)}
             type="button"
             className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-[#5CDB95]"
             id="user-menu-button"
@@ -34,54 +39,57 @@ export default function Header() {
             />
           </button>
           {/* <!-- Dropdown menu --> */}
-          <div
-            className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-            id="user-dropdown"
-          >
-            <div className="px-4 py-3">
-              <span className="block text-sm text-gray-900 dark:text-white">
-                Moisés Guerola Ferri
-              </span>
-              <span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">
-                gfmois@gmail.com
-              </span>
+          {isUserDropVisible ? (
+            <div
+              className="z-50 absolute xs:right-10 xs:top-10 sm:right-4 sm:top-10 md:right-[3.25rem] md:top-[1.75rem] my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+              id="user-dropdown"
+            >
+              <div className="px-4 py-3">
+                <span className="block text-sm text-gray-900 dark:text-white">
+                  Moisés Guerola Ferri
+                </span>
+                <span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">
+                  gfmois@gmail.com
+                </span>
+              </div>
+              <ul className="py-1" aria-labelledby="user-menu-button">
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Earnings
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Sign out
+                  </a>
+                </li>
+              </ul>
             </div>
-            <ul className="py-1" aria-labelledby="user-menu-button">
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Earnings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
+          ) : null}
           <button
+            onClick={() => toggleHidden()}
             data-collapse-toggle="mobile-menu-2"
             type="button"
             className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -105,7 +113,7 @@ export default function Header() {
           </button>
         </div>
         <div
-          className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+          className="items-center hidden justify-between w-full md:flex md:w-auto md:order-1"
           id="mobile-menu-2"
         >
           <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-[#212121] md:dark:bg-[#212121] dark:border-rose-700">
@@ -119,7 +127,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-            <Link
+              <Link
                 to="/stations"
                 aria-current="page"
                 className="block py-2 pl-3 pr-4 text-rose-600 rounded md:bg-transparent md:p-0 dark:text-gray-400"

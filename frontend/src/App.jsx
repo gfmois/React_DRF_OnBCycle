@@ -11,6 +11,7 @@ import LoadingComponent from "./components/Layout/LoadingComponent";
 export default function App() {
   const Home = React.lazy(() => import("./pages/home/HomePage"));
   const Stations = React.lazy(() => import("./pages/stations/StationsPage"));
+  const Auth = React.lazy(() => import("./pages/auth/AuthPage"));
 
   return (
     <BrowserRouter>
@@ -21,7 +22,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/stations" element={<Stations />} />
-              <Route path="/loading" element={<LoadingComponent />} />
+              <Route path="/auth" element={<Auth />} />
             </Routes>
           </Suspense>
         </div>
