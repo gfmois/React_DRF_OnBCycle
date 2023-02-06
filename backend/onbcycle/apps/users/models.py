@@ -36,12 +36,13 @@ class User(AbstractBaseUser, models.Model): #PermissionsMixin
     id_user = models.CharField(primary_key=True, unique=True, max_length=15)
     name = models.CharField(max_length=40)
     email = models.EmailField(unique=True, max_length=254)
+    phone = models.CharField(blank=False, max_length=9)
     role = models.CharField(max_length=15, default='Client')
     
     # objects = UserManager()
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'name', 'role']
+    REQUIRED_FIELDS = ['email', 'name', 'phone', 'role']
     
     # groups = models.ManyToManyField(
     #     Group,
@@ -65,7 +66,7 @@ class User(AbstractBaseUser, models.Model): #PermissionsMixin
         dt = datetime.now() + timedelta(minutes=60)
         token = jwt.encode({
             'email': self.email,
-            'exp': int(dt.strftime('%s'))
+            'exp': int(dt.strftime('%S'))
         }, settings.SECRET_KEY, algorithm='HS256')
         
         return token.decode('utf-8')

@@ -1,6 +1,6 @@
 Django==4.0.1
 django-cors-headers
-pymysql==1.0.2 # Move to Postgres?
+pymysql==1.0.2
 djangorestframework
 django-cors-headers
 environ
@@ -8,3 +8,4 @@ django-admin
 django-environ
 pymysql
 Pillow
+PyJWT<2

@@ -13,16 +13,6 @@ class UserView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = User
 
     def register(self, request: Request):
-        inputs = ('email', 'name', 'phone', 'password')
-        errors = []
-        
-        #! FIXME: Not working
-        for input in inputs:
-            if request.data[input] is None:
-                errors.append(f'{input} is required')
-        
-        
-        return Response(errors)
         data = {
             'email': request.data['email'],
             'name': request.data['name'],
@@ -30,13 +20,14 @@ class UserView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'password': request.data['password']
         }
         
-        return Response(data)
-        
-        for input in data.keys():
-            if data[input] is None:
-                raise ValueError(f'{input} is required')
-            
-        return Response(data)
         serializer = UserSerializer.register(data)
         return Response(serializer, status=status.HTTP_200_OK)
         
+    def login(self, requst: Request):
+        data = {
+            'email': requst.data['email'],
+            'password': requst.data['password']
+        }
+        
+        serializers = UserSerializer.login(data)
+        return Response(serializers, status=status.HTTP_200_OK)
