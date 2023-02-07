@@ -6,6 +6,8 @@ import "./App.css";
 
 // Context
 import { StationContextProvider } from "./context/StationsContext";
+import { AuthContextProvider } from "./context/AuthContext";
+import { ToastContextProvider } from "./context/ToasterContext";
 import LoadingComponent from "./components/Layout/LoadingComponent";
 
 export default function App() {
@@ -15,18 +17,22 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <StationContextProvider>
-        <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
-          <Suspense fallback={<LoadingComponent/>}>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/stations" element={<Stations />} />
-              <Route path="/auth" element={<Auth />} />
-            </Routes>
-          </Suspense>
-        </div>
-      </StationContextProvider>
+      <ToastContextProvider>
+        <StationContextProvider>
+          <AuthContextProvider>
+            <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
+              <Suspense fallback={<LoadingComponent />}>
+                <Header />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/stations" element={<Stations />} />
+                  <Route path="/auth" element={<Auth />} />
+                </Routes>
+              </Suspense>
+            </div>
+          </AuthContextProvider>
+        </StationContextProvider>
+      </ToastContextProvider>
     </BrowserRouter>
   );
 }

@@ -1,24 +1,28 @@
 import os
 from PIL import Image
 from .models import Station
-from django.shortcuts import render
-from .serializers import StationSerializer
-from rest_framework.response import Response
-from rest_framework.request import Request
-from rest_framework.decorators import api_view
-from rest_framework import generics, mixins, status, viewsets
-from django.core.files.temp import NamedTemporaryFile
 from ..core.utils import generate_uuid
+from .serializers import StationSerializer
+from ..core.permisions import IsLocalAdmin
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.permissions import (AllowAny,)
+from rest_framework import mixins, status, viewsets
 
 # Create your views here.
 class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
-    # permission_classes = (AllowAny)
+    permission_classes = (AllowAny,)
     serializer_class = StationSerializer
     queryset = Station.objects.all()
-
+    
+    def get_permissions(self):
+        if self.request.method in ('POST', 'DELETE', 'PUT'):
+            self.permission_classes = [IsLocalAdmin]
+            
+        return super(StationView, self).get_permissions()
+    
     def read(self, request):
-        serializer = StationSerializer.read()
-        return Response(serializer)
+        return Response(StationSerializer.read())
 
     def getStation(self, *args, **kwargs):
         serializer = StationSerializer.getStationById(
@@ -47,7 +51,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'type': request.data.get('type')
         }
 
-        #? ASK -> This must be in the serializer? 
+        #? ASK -> This should be in the serializer? 
         try:
             with Image.open(request.FILES['file']) as img:
                 img.verify()

@@ -10,7 +10,6 @@ class BikeSerializer(serializers.ModelSerializer):
         if instance is None: 
             return {}
         
-        print(instance)
         return {
             'id_bike': instance.id_bike,
             'status': instance.status

@@ -11,7 +11,6 @@ class RentSerializer(serializers.ModelSerializer):
 
     def rent_bike(id_slot):
         id_bike = SlotSerializer.rent_bike_slot(id_slot)
-        print(id_bike)
 
         if type(id_bike) == dict and id_bike.get('status'):
             return id_bike

@@ -5,10 +5,6 @@ import MapComponent from "./Map/MapComponent";
 import { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
-// TODO: Check why Component re-rendes when input gets value
-// TODO: Modal not takes all width of inputs on render
-// TODO: Component it's like new page, no over the content
-
 export default function FormModalComponent({ cols, changeVisibility, action }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [markerItem, setMarkerItem] = useState();
@@ -35,7 +31,6 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
     action(data);
   };
 
-  // TODO: Pasar todo esto al padre
   const getLngLat = (e) => {
     if (e.center) {
       e = {

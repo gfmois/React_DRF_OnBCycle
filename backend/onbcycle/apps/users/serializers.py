@@ -42,7 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
 
             return {
                 'user': UserSerializer.to_user(user),
-                'token': user.token
+                'token': user.token,
+                'refresh_token': user.refresh_token
             }
 
     def login(context):
@@ -61,7 +62,8 @@ class UserSerializer(serializers.ModelSerializer):
                 return {
                     'email': user.email,
                     'name': user.name,
-                    'token': user.token
+                    'token': user.token,
+                    'refresh_token': user.refresh_token
                 }
             else:
                 return {
