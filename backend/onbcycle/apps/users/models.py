@@ -41,6 +41,7 @@ class User(AbstractBaseUser, models.Model):  # PermissionsMixin
     email = models.EmailField(unique=True, max_length=254)
     phone = models.CharField(blank=False, max_length=9)
     role = models.CharField(max_length=15, default='Client')
+    avatar = models.CharField(max_length=255)
 
     # objects = UserManager()
 

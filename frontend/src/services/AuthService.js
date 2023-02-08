@@ -7,8 +7,8 @@ const AuthService = {
     register(credentials) {
         return Http().post('/auth/register', credentials)
     },
-    getUser(data) {
-        return Http().get('/auth/user', data)
+    getUser() {
+        return Http().get('/auth/user')
     },
     isAdmin(data) {
         return Http().get('/auth/isAdmin', data)

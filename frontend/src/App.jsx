@@ -9,6 +9,7 @@ import { StationContextProvider } from "./context/StationsContext";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ToastContextProvider } from "./context/ToasterContext";
 import LoadingComponent from "./components/Layout/LoadingComponent";
+import ToastrComponent from "./components/Layout/ToasterComponent";
 
 export default function App() {
   const Home = React.lazy(() => import("./pages/home/HomePage"));
@@ -20,6 +21,7 @@ export default function App() {
       <ToastContextProvider>
         <StationContextProvider>
           <AuthContextProvider>
+            <ToastrComponent />
             <div className="bg-[#F3F4FD] dark:bg-[#121212] dark:text-[#f3f4fd] w-full h-full box-border">
               <Suspense fallback={<LoadingComponent />}>
                 <Header />

@@ -7,7 +7,7 @@ import JWTService from "../services/JWTService";
 import { useToast } from "./useToaster";
 
 export function useAuth() {
-    const { loadToast, toast } = useToast()
+  const { loadToast, toast } = useToast()
   const navigate = useNavigate();
   const {
     user,
@@ -41,7 +41,7 @@ export function useAuth() {
         setJwt(data.token);
         setRefreshJwt(data.refresh_token);
         loadToast(`${data.user.name} your account has been created.`, 'success')
-        // navigate("/");
+        navigate("/");
       }).catch((e) => {
         loadToast(`${e.response.data[0]}`, 'error')
       })
@@ -55,7 +55,6 @@ export function useAuth() {
       AuthService.login(credentials)
         .then(({ data }) => {
           JWTService.saveToken(data.token);
-          console.log(data.token);
           setJwt(data.token);
           dispatch({ type: "UPDATE_STATE", error: false, loading: false });
           navigate("/");
@@ -67,6 +66,15 @@ export function useAuth() {
     [setJwt, navigate]
   );
 
+  const logout = useCallback(() => {
+    JWTService.removeRefreshToken()
+    JWTService.removeToken()
+    setJwt(null)
+    setRefreshJwt(null)
+    navigate('/')
+    setUser(null)
+  })
+
   return {
     user,
     setUser,
@@ -77,5 +85,6 @@ export function useAuth() {
     setJwt,
     state,
     register,
+    logout
   };
 }

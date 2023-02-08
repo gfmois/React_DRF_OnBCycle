@@ -1,11 +1,13 @@
 import { useCallback, useContext, useEffect, useReducer, useState } from "react";
 import StationsContext from "../context/StationsContext";
 import StationService from "../services/StationService";
+import { useToast } from "./useToaster";
 
 export function useStations() {
     const { stations, setStations } = useContext(StationsContext)
     const [cols, setCols] = useState([])
     const [station, setStation] = useState({})
+    const { loadToast, toast } = useToast()
 
     const getStations = useCallback(
         () => {
@@ -39,8 +41,9 @@ export function useStations() {
         })
         
         StationService.addStation(formData)
-            .then((e) => {
-                console.log(e);
+            .then(({data}) => {
+                setStations([...stations, data])
+                loadToast(`Station Created Correctly`, "success");
             })
     })
 

@@ -1,10 +1,12 @@
+import FormModalComponent from "../../components/FormModalComponent";
 import StationItem from "./StationItem";
 import { HiMap } from "react-icons/hi";
-import FormModalComponent from "../../components/FormModalComponent";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function StationsListItems({ stations, changeFormStatus, cols, addStation }) {
   const [formModalVisible, setFormModalVisible] = useState(false);
+  const { isAdmin } = useAuth()
 
   const changeVisibilityFormModal = (nVisibility) => {
     setFormModalVisible(nVisibility);
@@ -24,7 +26,7 @@ export default function StationsListItems({ stations, changeFormStatus, cols, ad
         )}
       </>
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="flex justify-between">
+        {isAdmin ? <div className="flex justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-[#F3F4FD] uppercase">
             Stations near you
           </h2>
@@ -35,7 +37,7 @@ export default function StationsListItems({ stations, changeFormStatus, cols, ad
           >
             New Location <HiMap />
           </button>
-        </div>
+        </div> : null}
 
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {stations.map((e, i) => (

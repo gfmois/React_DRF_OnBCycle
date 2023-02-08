@@ -31,3 +31,16 @@ class UserView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         
         serializers = UserSerializer.login(data)
         return Response(serializers, status=status.HTTP_200_OK)
+    
+    def user(self, request: Request):
+        try:
+            if request.headers['Authorization']:
+                token = str(request.headers['Authorization']).split(' ')[1]
+                serializer = UserSerializer.get_user(token)
+                return Response(serializer, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                'msg': 'No token found',
+                'status': 401
+            }, status=status.HTTP_401_UNAUTHORIZED)
+            
