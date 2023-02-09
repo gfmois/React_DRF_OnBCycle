@@ -15,6 +15,7 @@ export default function App() {
   const Home = React.lazy(() => import("./pages/home/HomePage"));
   const Stations = React.lazy(() => import("./pages/stations/StationsPage"));
   const Auth = React.lazy(() => import("./pages/auth/AuthPage"));
+  const Dashboard = React.lazy(() => import('./pages/dashboard/DashboardPage'))
 
   return (
     <BrowserRouter>
@@ -29,6 +30,7 @@ export default function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/stations" element={<Stations />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/dashboard" element={<Dashboard/>} />
                 </Routes>
               </Suspense>
             </div>
