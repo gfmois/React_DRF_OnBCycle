@@ -9,3 +9,4 @@ django-environ
 pymysql
 Pillow
 PyJWT<2
+cryptography
