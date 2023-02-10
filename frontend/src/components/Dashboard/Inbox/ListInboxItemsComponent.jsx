@@ -1,5 +1,9 @@
+import ListTableComponent from "../../ListTableComponent";
+
 export default function ListInboxItemsComponent() {
+    const head = ['Message', 'Title', 'Type', 'User', 'Status']
+
     return (
-        <h1>A</h1>
+        <ListTableComponent thead={head} />
     )
 }

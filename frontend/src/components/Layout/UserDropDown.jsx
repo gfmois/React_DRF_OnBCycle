@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CiUser } from "react-icons/ci"
 
 export default function UserDropDown({
   user,
@@ -15,10 +16,9 @@ export default function UserDropDown({
 
   return user ? (
     <div className="flex items-center md:order-2">
-      <button
+      <div
         onClick={() => action(!isVisible)}
-        type="button"
-        className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-rose-800"
+        className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-rose-800 cursor-pointer"
         id="user-menu-button"
         aria-expanded="false"
         data-dropdown-toggle="user-dropdown"
@@ -30,7 +30,7 @@ export default function UserDropDown({
           src={user.avatar}
           alt="user photo"
         />
-      </button>
+      </div>
       {/* <!-- Dropdown menu --> */}
       {isVisible ? (
         <div
@@ -48,12 +48,13 @@ export default function UserDropDown({
           <ul className="py-1" aria-labelledby="user-menu-button">
             {isAdmin ? (
               <li>
-                <a
-                  href="#"
+                <Link
+                  to='/dashboard'
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  onClick={() => action(false)}
                 >
                   Dashboard
-                </a>
+                </Link>
               </li>
             ) : null}
             <li>
@@ -107,7 +108,7 @@ export default function UserDropDown({
       </button>
     </div>
   ) : (
-    <div className="flex items-center md:order-2">
+    <div className="flex items-center md:order-2 bg-rose-600">
       <button
         onClick={() => navigate("/auth")}
         type="button"
@@ -117,12 +118,10 @@ export default function UserDropDown({
         data-dropdown-toggle="user-dropdown"
         data-dropdown-placement="bottom"
       >
-        <span className="sr-only">Open User Menu</span>
-        <img
-          className="w-8 h-8 rounded-full"
-          src="/test.png"
-          alt="user photo"
-        />
+        <span className="sr-only bg-rose-600">Open User Menu</span>
+        <div className="w-full h-full bg-transparent">
+          <CiUser className=" focus:dark:bg-rose-800 w-full h-[3vh] bg-rose-600 text-[#2d2d2d]" />
+        </div>
       </button>
     </div>
   );

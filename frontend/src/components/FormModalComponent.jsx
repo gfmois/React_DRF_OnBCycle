@@ -5,10 +5,22 @@ import MapComponent from "./Map/MapComponent";
 import { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
-export default function FormModalComponent({ cols, changeVisibility, action }) {
+export default function FormModalComponent({ cols, changeVisibility, action, item = {}, showMap = true }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [markerItem, setMarkerItem] = useState();
   const items = cols.map((i) => {
+    if (typeof i != 'object') {
+      return {
+        type: 'text',
+        placeholder: i,
+        required: true,
+        id: i,
+        value: item[i] || "",
+        label: i,
+        name: i
+      }
+    }
+
     return {
       type: i[1],
       placeholder: i[0],
@@ -69,7 +81,7 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
     }
   */
 
-  return isMapVisible ? (
+  return isMapVisible && showMap ? (
     <div className="h-screen w-screen dark:bg-[#2d2d2d] absolute z-50">
       <div className="flex items-center justify-center">
         <div className="absolute z-50 top-3 hover:animate-pulse">
@@ -143,11 +155,11 @@ export default function FormModalComponent({ cols, changeVisibility, action }) {
               );
             })}
             <div className="btns w-full h-full flex justify-end items-end">
-              <ButtonComponent
+              {showMap ? <ButtonComponent
                 text="Open Maps"
                 action={() => setMapVisible(true)}
                 style="green"
-              />
+              /> : null}
               <ButtonComponent
                 text="Save"
                 action={handleSubmit(onSubmit)}

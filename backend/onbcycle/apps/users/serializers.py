@@ -22,15 +22,15 @@ class UserSerializer(serializers.ModelSerializer):
             'avatar': instance.avatar,
             'role': instance.role
         }
-        
+
         if is_to_show is False:
             user['password'] = instance.password,
-        
+
         return user
-        
+
     def get_user(token):
         try:
-            dec_token = dict(jwt.decode(token, settings.SECRET_KEY)) 
+            dec_token = dict(jwt.decode(token, settings.SECRET_KEY))
             user = User.objects.filter(email=dec_token['email']).first()
             if user is None:
                 return {
@@ -43,6 +43,13 @@ class UserSerializer(serializers.ModelSerializer):
                 'msg': 'Error on decode token',
                 'status': 400
             }
+
+    def get_users():
+        users = []
+        for user in User.objects.all():
+            users.append(UserSerializer.to_user(user, True))
+
+        return users
 
     def register(context):
         email = context['email']
@@ -65,7 +72,7 @@ class UserSerializer(serializers.ModelSerializer):
             )
 
             return {
-                'user': UserSerializer.to_user(user),
+                'user': UserSerializer.to_user(user, True),
                 'token': user.token,
                 'refresh_token': user.refresh_token
             }
@@ -80,13 +87,15 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.filter(email=email).first()
         if user is None:
             raise serializers.ValidationError("Email not found")
-        
+
         try:
             if check_password(password, user.password):
                 return {
                     'email': user.email,
                     'name': user.name,
                     'token': user.token,
+                    'avatar': user.avatar,
+                    'role': user.role,
                     'refresh_token': user.refresh_token
                 }
             else:
@@ -95,5 +104,4 @@ class UserSerializer(serializers.ModelSerializer):
                     'status': 400
                 }
         except:
-            raise('Error on Login')
-
+            raise ('Error on Login')

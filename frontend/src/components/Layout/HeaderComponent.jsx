@@ -26,7 +26,7 @@ export default function Header() {
           id="mobile-menu-2"
         >
           <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-[#212121] md:dark:bg-[#212121] dark:border-rose-700">
-            <li>
+            {!user ? <li>
               <Link
                 to="/"
                 aria-current="page"
@@ -34,12 +34,12 @@ export default function Header() {
               >
                 Home
               </Link>
-            </li>
+            </li> : null}
             <li>
               <Link
                 to="/stations"
                 aria-current="page"
-                className="block py-2 pl-3 pr-4 text-rose-600 rounded md:bg-transparent md:p-0 dark:text-gray-400"
+                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Stations
               </Link>
@@ -52,20 +52,27 @@ export default function Header() {
                 Services
               </a>
             </li>
-            <li>
+            {!user ? <li>
               <a
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Pricing
               </a>
-            </li>
+            </li> : <li>
+              <a
+                href="#"
+                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                My Wallet
+              </a>
+            </li>}
             <li>
               <a
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
-                Contact
+                Contact with us
               </a>
             </li>
           </ul>

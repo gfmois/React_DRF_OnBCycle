@@ -3,7 +3,7 @@ import ToastrComponent from "../Layout/ToasterComponent";
 import { useToast } from "../../hooks/useToaster";
 import { useForm } from "react-hook-form";
 
-export default function SignUpFormComponent({ action }) {
+export default function SignUpFormComponent({ action, toggle }) {
   const { toast, loadToast, cleanToast } = useToast();
   const {
     register,
@@ -139,12 +139,12 @@ export default function SignUpFormComponent({ action }) {
               />
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <a
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-rose-700"
+                <div
+                  onClick={toggle}
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-rose-700 cursor-pointer"
                 >
                   Login here
-                </a>
+                </div>
               </p>
             </form>
           </div>

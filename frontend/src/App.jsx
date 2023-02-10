@@ -30,7 +30,9 @@ export default function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/stations" element={<Stations />} />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/dashboard" element={<Dashboard/>} />
+                  <Route path="/dashboard" element={<Suspense fallback={<>Loading...</>}>
+                    <Dashboard />
+                  </Suspense>} />
                 </Routes>
               </Suspense>
             </div>
