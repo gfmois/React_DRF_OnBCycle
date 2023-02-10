@@ -1,12 +1,15 @@
-import React, { useState } from "react"
+import React, { useState, Suspense } from "react"
 import SidebarComponent from "../../components/Dashboard/SidebarComponent"
 import DashboardComponent from "../../components/Dashboard/DashboardComponent"
+import LoadingComponent from "../../components/Layout/LoadingComponent"
 
 export default function DashboardPage() {
     const [pageComp, setPageComp] = useState(0)
     const Inbox = React.lazy(() => import('../../components/Dashboard/Inbox/ListInboxItemsComponent'))
+    const Users = React.lazy(() => import('../../components/Dashboard/Users/ListUserComponent'))
+    const Slots = React.lazy(() => import('../../components/Dashboard/Slots/ListSlotsComponent'))
 
-    const pages = [<DashboardComponent />, <Inbox />]
+    const pages = [<DashboardComponent/>, <Inbox/>, <Users />, <Slots/>]
 
     return (
         <>
@@ -19,7 +22,11 @@ export default function DashboardPage() {
 
             <div className="flex">
                 <SidebarComponent page={setPageComp} />
-                {pages[pageComp]}
+                <Suspense fallback={<LoadingComponent/>}>
+                    <div className="w-full h-full p-5">
+                        {pages[pageComp]}
+                    </div>
+                </Suspense>
             </div>
         </>
     )

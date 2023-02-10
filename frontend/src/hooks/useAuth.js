@@ -9,6 +9,7 @@ import { useToast } from "./useToaster";
 export function useAuth() {
   const { loadToast, toast } = useToast()
   const navigate = useNavigate();
+  const [usersList, setUsersList] = useState([])
   const {
     user,
     setUser,
@@ -19,29 +20,29 @@ export function useAuth() {
     refreshJwt,
     setRefreshJwt,
   } = useContext(AuthContext);
-  const [state, dispatch] = useReducer(
-    (state, action) => {
-      if (action.type == "UPDATE_STATE") {
-        return {
-          error: action.error,
-          loading: action.loading,
-        };
-      }
 
-      return state;
-    },
-    { errror: false, loading: false }
-  );
+  const getUsers = useCallback(() => {
+    AuthService.getUsers()
+      .then(({ data }) => {
+        setUsersList(data)
+      })
+  }, [usersList, setUsersList])
 
   const register = useCallback(
     (credentials) => {
       AuthService.register(credentials).then(({ data }) => {
+        setUser({
+          avatar: data.user.avatar,
+          name: data.user.name,
+          role: data.user.role,
+          email: data.user.email
+        })
         JWTService.saveToken(data.token);
         JWTService.saveRefreshToken(data.refresh_token);
         setJwt(data.token);
         setRefreshJwt(data.refresh_token);
         loadToast(`${data.user.name} your account has been created.`, 'success')
-        navigate("/");
+        navigate("/stations");
       }).catch((e) => {
         loadToast(`${e.response.data[0]}`, 'error')
       })
@@ -51,16 +52,23 @@ export function useAuth() {
 
   const login = useCallback(
     (credentials) => {
-      // dispatch({ type: 'UPDATE_STATE', error: false, loading: true })
       AuthService.login(credentials)
         .then(({ data }) => {
+          setUser({
+            avatar: data.avatar,
+            name: data.name,
+            role: data.role,
+            email: data.email
+          })
           JWTService.saveToken(data.token);
+          JWTService.saveRefreshToken(data.refresh_token)
           setJwt(data.token);
-          dispatch({ type: "UPDATE_STATE", error: false, loading: false });
-          navigate("/");
+          setRefreshJwt(data.refresh_token)
+          loadToast(`Welcome back ${data.name}`, 'success')
+          navigate("/stations");
         })
         .catch((e) => {
-          dispatch({ type: "UPDATE_STATE", error: true, loading: false });
+          loadToast(e, 'error')
         });
     },
     [setJwt, navigate]
@@ -71,7 +79,8 @@ export function useAuth() {
     JWTService.removeToken()
     setJwt(null)
     setRefreshJwt(null)
-    navigate('/')
+    loadToast('Session Closed', 'warning')
+    navigate("/");
     setUser(null)
   })
 
@@ -83,8 +92,10 @@ export function useAuth() {
     setIsAdmin,
     jwt,
     setJwt,
-    state,
     register,
-    logout
+    logout,
+    getUsers,
+    usersList,
+    setUsersList
   };
 }

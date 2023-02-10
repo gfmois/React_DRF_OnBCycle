@@ -5,10 +5,22 @@ import MapComponent from "./Map/MapComponent";
 import { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
-export default function FormModalComponent({ cols, changeVisibility, action }) {
+export default function FormModalComponent({ cols, changeVisibility, action, item = {} }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [markerItem, setMarkerItem] = useState();
   const items = cols.map((i) => {
+    if (typeof i != 'object') {
+      return {
+        type: 'text',
+        placeholder: i,
+        required: true,
+        id: i,
+        value: item[i] || "",
+        label: i,
+        name: i
+      }
+    }
+
     return {
       type: i[1],
       placeholder: i[0],

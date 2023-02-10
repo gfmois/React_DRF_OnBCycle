@@ -12,6 +12,9 @@ const AuthService = {
     },
     isAdmin(data) {
         return Http().get('/auth/isAdmin', data)
+    },
+    getUsers() {
+        return Http().get('/auth/users')
     }
 }
 
