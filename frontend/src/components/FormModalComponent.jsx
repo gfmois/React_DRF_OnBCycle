@@ -5,7 +5,7 @@ import MapComponent from "./Map/MapComponent";
 import { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
-export default function FormModalComponent({ cols, changeVisibility, action, item = {}, showMap = true }) {
+export default function FormModalComponent({ cols, changeVisibility, action, item = {}, showMap = true, onlyView = false }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [markerItem, setMarkerItem] = useState();
   const items = cols.map((i) => {
@@ -15,9 +15,10 @@ export default function FormModalComponent({ cols, changeVisibility, action, ite
         placeholder: i,
         required: true,
         id: i,
-        value: item[i] || "",
+        value: item[i],
         label: i,
-        name: i
+        name: i,
+        disabled: true
       }
     }
 
@@ -126,11 +127,13 @@ export default function FormModalComponent({ cols, changeVisibility, action, ite
                       type={item.type}
                       id={item.id}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder={item.placeholder}
+                      placeholder={item.disabled ? item.value : item.placeholder}
                       {...register(item.name, {
                         required: item.required,
                         minLength: item.minLength,
                         maxLength: item.maxLength,
+                        value: item.value,
+                        disabled: item.disabled || false
                       })}
                       autoComplete="off"
                     />
@@ -160,11 +163,11 @@ export default function FormModalComponent({ cols, changeVisibility, action, ite
                 action={() => setMapVisible(true)}
                 style="green"
               /> : null}
-              <ButtonComponent
+              {!onlyView ? <ButtonComponent
                 text="Save"
                 action={handleSubmit(onSubmit)}
                 style="default"
-              />
+              /> : null}
               <ButtonComponent
                 text="Back"
                 style="red"

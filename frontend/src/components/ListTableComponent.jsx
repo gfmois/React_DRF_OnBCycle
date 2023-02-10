@@ -1,12 +1,12 @@
 import { useState } from "react"
 import FormModalComponent from "./FormModalComponent"
 
-export default function ListTableComponent({ items = [], modelMap = true }) {
+export default function ListTableComponent({ items = [], modelMap = true, onlyView = true }) {
     const [itemSelected, setItemSelected] = useState(false)
     return (
         items.length > 0
             ? <>
-                {itemSelected ? <FormModalComponent showMap={modelMap} cols={Object.keys(itemSelected)} changeVisibility={() => setItemSelected(false)} item={itemSelected} /> : null}
+                {itemSelected ? <FormModalComponent showMap={modelMap} onlyView={onlyView} cols={Object.keys(itemSelected)} changeVisibility={() => setItemSelected(false)} item={itemSelected} /> : null}
                 <div className="relative overflow-x-auto sm:rounded-lg shadow-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -27,7 +27,7 @@ export default function ListTableComponent({ items = [], modelMap = true }) {
                                     </th>
                                     )}
                                     <td className="px-6 py-4 flex flex-row gap-4">
-                                        <div className="font-medium text-amber-600 dark:text-amber-500 hover:underline cursor-pointer" onClick={() => setItemSelected(e)}>Edit</div>
+                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(e)}>See</div>
                                         <div className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">Remove</div>
                                     </td>
                                 </tr>

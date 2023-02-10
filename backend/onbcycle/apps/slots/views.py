@@ -3,6 +3,7 @@ from rest_framework import mixins, viewsets
 from .models import Slot
 from .serializers import SlotSerializer
 from rest_framework.response import Response
+from rest_framework.request import Request
 
 # Create your views here.
 class SlotView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
@@ -12,3 +13,15 @@ class SlotView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     def getStationSlots(self, request, *args, **kwargs):
         serializer = SlotSerializer.getStationSlots(kwargs['id_station'])
         return Response(serializer)
+    
+    def get_slots(self, request: Request):
+        # TODO: Token decode to check is admin
+        try:
+            if request.headers['Authorization']:
+                serializer = [SlotSerializer.to_slot(slot) for slot in self.queryset]
+                return Response(serializer)
+        except:
+            return Response({
+                'msg': 'No token found',
+                'status': 401
+            })

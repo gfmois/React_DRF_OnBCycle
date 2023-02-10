@@ -1,15 +1,17 @@
-import React, { useState, Suspense } from "react"
+import React, { useState, Suspense, useEffect, Component } from "react"
 import SidebarComponent from "../../components/Dashboard/SidebarComponent"
-import DashboardComponent from "../../components/Dashboard/DashboardComponent"
 import LoadingComponent from "../../components/Layout/LoadingComponent"
 
 export default function DashboardPage() {
     const [pageComp, setPageComp] = useState(0)
+    const Dashboard = React.lazy(() => import("../../components/Dashboard/DashboardComponent"))
     const Inbox = React.lazy(() => import('../../components/Dashboard/Inbox/ListInboxItemsComponent'))
     const Users = React.lazy(() => import('../../components/Dashboard/Users/ListUserComponent'))
     const Slots = React.lazy(() => import('../../components/Dashboard/Slots/ListSlotsComponent'))
+    const Stations = React.lazy(() => import('../../components/Dashboard/Stations/ListStationsComponent'))
 
-    const pages = [<DashboardComponent/>, <Inbox/>, <Users />, <Slots/>]
+    const pages = [<Dashboard key={'Dashboard'} />, <Inbox key={"Inbox"} />, <Users key={"Users"} />, <Slots key={"Slots"} />, <Stations key={"Stations"} />]
+    const pagesNames = pages.map((c, i) => { return { name: c.key, index: i } });
 
     return (
         <>
@@ -21,8 +23,8 @@ export default function DashboardPage() {
             </button>
 
             <div className="flex">
-                <SidebarComponent page={setPageComp} />
-                <Suspense fallback={<LoadingComponent/>}>
+                <SidebarComponent page={setPageComp} items={pagesNames} />
+                <Suspense fallback={<LoadingComponent />}>
                     <div className="w-full h-full p-5">
                         {pages[pageComp]}
                     </div>
