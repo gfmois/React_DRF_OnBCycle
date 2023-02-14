@@ -1,23 +1,31 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useEffect } from "react";
+
+import StatusComponent from "../StatusCompononet";
 import MapComponent from "../Map/MapComponent";
 import RentBikeModal from "../Bikes/RentBikeModal";
 
-import { GiDutchBike, GiGreenhouse } from "react-icons/gi";
+import { GiDutchBike, GiCancel } from "react-icons/gi";
+import { RiReservedLine } from 'react-icons/ri'
 import { FaBicycle } from "react-icons/fa";
 import { SlHome } from "react-icons/sl";
 import { CgKeyhole } from "react-icons/cg"
 
-import StatusComponent from "../StatusCompononet";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function StationDetails({
   visible,
+  setBike,
+  bike,
   item,
   changeFormVisibility,
 }) {
+  const { user } = useAuth()
   const [showMap, setShowMap] = useState(false);
   const [isRenting, setIsRenting] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setTimeout(() => {
@@ -96,22 +104,31 @@ export default function StationDetails({
               <div className="flex xs:flex-col sm:flex-row sm:gap-4 xs:gap-1 md:gap-5 p-6 items-center w-full h-full justify-center">
                 <div className="border border-black rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5">
                   <SlHome color="black" size="4rem" />
-                  {/* Slots */}
                   {item.slots.length}
                 </div>
                 <div className="border border-black rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5">
                   <GiDutchBike color="black" size="5rem" />
-                  {/* Bicicletas Disponibles */}
-                  {/* TODO: Make on click to rent bike */}
                   {
                     item.slots.filter((e) => Object.keys(e.bike).length > 0)
                       .length
                   }
                 </div>
-                <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => setIsRenting(true)}>
-                  <CgKeyhole color="black" size="5rem" />
-                  Rent a Bike 
-                </div>
+                {
+                  user
+                    ? !bike
+                      ? <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => setIsRenting(true)}>
+                        <RiReservedLine color="black" size="5rem" />
+                        Rent a Bike
+                      </div>
+                      : <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => setBike(false)}>
+                        <GiCancel className="!text-black" size="5rem" />
+                        Leave Bike
+                      </div>
+                    : <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => navigate('/auth')}>
+                      <CgKeyhole color="black" size="5rem" />
+                      Login
+                    </div>
+                }
               </div>
             </div>
           </motion.div>
@@ -147,17 +164,22 @@ export default function StationDetails({
                       }
                     </p>
                   </div>
-                  <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1 cursor-pointer">
-                    <CgKeyhole color="black" size="3.5rem" onClick={() => setIsRenting(true)}/>
-                    <p className="text-black text-xs font-bold">Rent a Bike</p>
-                  </div>
+                  {
+                    user ? <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1 cursor-pointer">
+                      <CgKeyhole color="black" size="3.5rem" onClick={() => setIsRenting(true)} />
+                      <p className="text-black text-xs font-bold">Rent a Bike</p>
+                    </div> : <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1 cursor-pointer">
+                      <CgKeyhole color="black" size="3.5rem" onClick={() => navigate('/auth')} />
+                      <p className="text-black text-xs font-bold">Login</p>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
           </motion.div>
         </div>
       </div>
-      <RentBikeModal visible={isRenting} action={setIsRenting} />
+      <RentBikeModal visible={isRenting} bike={item.id_station} action={setBike} backButtonAction={setIsRenting} />
     </>
   ) : (
     ""

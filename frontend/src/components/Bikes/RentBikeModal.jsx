@@ -1,7 +1,7 @@
 import { AiOutlineInfoCircle, AiOutlineWarning } from "react-icons/ai";
 import ButtonComponent from "../Layout/ButtonComponent";
 
-export default function RentBikeModal({ visible, action }) {
+export default function RentBikeModal({ visible, backButtonAction, action, bike }) {
   return visible ? (
     <div className="absolute z-50 top-1/4 md:left-1/4 w-full xs:h-1/2  md:w-[45%] sm:h-[30%] md:h-[36%] p-4">
       <div className="rounded-lg xs:bg-gray-300 shadow-2xl sm:bg-gray-200 w-full h-full p-6 flex flex-col">
@@ -18,11 +18,15 @@ export default function RentBikeModal({ visible, action }) {
             any problems or damage to the staff.
           </p>
           <div className="btn_wrapper flex flex-row-reverse">
-            <ButtonComponent style="red" text="Back" action={() => action(false)} />
+            <ButtonComponent style="red" text="Back" action={() => backButtonAction(false)} />
             <ButtonComponent
               style="custom"
               addStyle="!bg-amber-500 dark:focus:ring-amber-400 focus:ring-amber-400"
               text="I agree and I want to rent"
+              action={() => {
+                action(bike)
+                backButtonAction(false)
+              }}
             />
           </div>
         </div>

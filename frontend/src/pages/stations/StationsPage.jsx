@@ -4,7 +4,7 @@ import { useStations } from "../../hooks/useStation";
 import { useReducer, useState } from "react";
 
 export default function StationsPage() {
-  const { stations, station, cols, addStation, getAllStation } = useStations();
+  const { stations, station, cols, addStation, getAllStation, bike, setBike, reserveBike } = useStations();
   const [state, dispatch] = useReducer(
     (state, action) => {
       if (action.type == "CHANGE_FORM") {
@@ -35,6 +35,8 @@ export default function StationsPage() {
           item={state.details_station}
           visible={state.formActived}
           changeFormVisibility={changeFormStatus}
+          setBike={reserveBike}
+          bike={bike}
         />
       ) : (
         <StationsListItems
