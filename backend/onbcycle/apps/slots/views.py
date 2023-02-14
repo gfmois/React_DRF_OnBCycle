@@ -15,13 +15,13 @@ class SlotView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         return Response(serializer)
     
     def get_slots(self, request: Request):
-        # TODO: Token decode to check is admin
-        try:
-            if request.headers['Authorization']:
-                serializer = [SlotSerializer.to_slot(slot) for slot in self.queryset]
-                return Response(serializer)
-        except:
-            return Response({
-                'msg': 'No token found',
-                'status': 401
-            })
+        serializer = [SlotSerializer.to_slot(slot) for slot in self.queryset]
+        return Response(serializer)
+        # try:
+        #     if request.headers['Authorization']:
+        #         print(request.headers['Authorization'])
+        # except:
+        #     return Response({
+        #         'msg': 'No token found',
+        #         'status': 401
+        #     })

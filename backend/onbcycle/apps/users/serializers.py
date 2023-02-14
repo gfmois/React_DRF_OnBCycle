@@ -30,6 +30,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_user(token):
         try:
+            if 'Bearer' in token:
+                token = str(token).split(' ')[1]
+                
             dec_token = dict(jwt.decode(token, settings.SECRET_KEY))
             user = User.objects.filter(email=dec_token['email']).first()
             if user is None:
