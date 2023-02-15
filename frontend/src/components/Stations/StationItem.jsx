@@ -34,31 +34,31 @@ export default function StationItem({ station, changeFormStatus }) {
             4 Bikes to Rent
           </p>
         </div>
-        <p className="text-sm font-medium text-gray-900 mr-3">
-          <StatusComponent status={station.status}>
+        <p className="text-sm font-medium text-gray-900 mr-3 flex items-center justify-center">
+          <div className="flex">
+            <StatusComponent status={station.status} />
+          </div>
+          <div className="absolute h-4 w-4">
             <AnimatePresence>
-              {true && (
-                <motion.span
-                  key="stateBox"
-                  initial={{ scale: 0.5, opacity: 1 }}
-                  animate={{ scale: 1.5, opacity: 1 }}
-                  exit={{
-                    opacity: 1,
-                    scale: 0.5,
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                  }}
-                  className={
-                    station.state == 1
-                      ? "flex w-full h-full border border-green-500 bg-transparent rounded-full"
-                      : "flex w-full h-full border border-red-500 bg-transparent rounded-full"
-                  }
-                />
-              )}
+              <motion.span
+                key="stateBox"
+                initial={{ scale: 0.5, opacity: 1 }}
+                animate={{ scale: 1.5, opacity: 1 }}
+                exit={{
+                  opacity: 1,
+                  scale: 0.5,
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                }}
+                className={` ${station.status == 1
+                  ? "flex w-full h-full border border-green-500 bg-transparent rounded-full"
+                  : "flex w-full h-full border border-red-500 bg-transparent rounded-full"}`
+                }
+              />
             </AnimatePresence>
-          </StatusComponent>
+          </div>
         </p>
       </div>
     </div>
