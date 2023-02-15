@@ -1,10 +1,12 @@
 import StationsListItems from "../../components/Stations/StationsListItems";
 import StationDetails from "../../components/Stations/StationDetails";
 import { useStations } from "../../hooks/useStation";
+import { useRent } from "../../hooks/useRent";
 import { useReducer, useState } from "react";
 
 export default function StationsPage() {
-  const { stations, station, cols, addStation, getAllStation, bike, setBike, reserveBike } = useStations();
+  const { stations, station, cols, addStation, getAllStation } = useStations();
+  const { bike, leaveBike, reserveBike, setBike } = useRent()
   const [state, dispatch] = useReducer(
     (state, action) => {
       if (action.type == "CHANGE_FORM") {
@@ -36,6 +38,7 @@ export default function StationsPage() {
           visible={state.formActived}
           changeFormVisibility={changeFormStatus}
           setBike={reserveBike}
+          leaveBike={leaveBike}
           bike={bike}
         />
       ) : (

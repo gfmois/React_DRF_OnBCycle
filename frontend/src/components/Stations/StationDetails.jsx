@@ -19,14 +19,15 @@ export default function StationDetails({
   visible,
   setBike,
   bike,
+  leaveBike,
   item,
   changeFormVisibility,
 }) {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const [showMap, setShowMap] = useState(false);
   const [isRenting, setIsRenting] = useState(false)
-  const navigate = useNavigate()
-
+ 
   useEffect(() => {
     setTimeout(() => {
       setShowMap(!showMap);
@@ -120,7 +121,7 @@ export default function StationDetails({
                         <RiReservedLine color="black" size="5rem" />
                         Rent a Bike
                       </div>
-                      : <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => setBike(false)}>
+                      : <div className="border border-black cursor-pointer rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5" onClick={() => leaveBike(bike, item.id_station)}>
                         <GiCancel className="!text-black" size="5rem" />
                         Leave Bike
                       </div>

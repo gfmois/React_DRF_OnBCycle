@@ -17,9 +17,6 @@ const StationService = {
     getFullStation(stationID) {
         return Http().get(`stations/info/${stationID}`)
     },
-    reserveBike(stationID) {
-        return Http().get(`rents/${stationID}`)
-    }
 }
 
 export default StationService;

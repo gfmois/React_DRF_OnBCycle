@@ -45,15 +45,22 @@ class SlotSerializer(serializers.ModelSerializer):
             'status': 400
         }
 
-    def get_random_slot(id_station):
-        slots = [SlotSerializer.to_slot(slot, False) for slot in Slot.objects.raw(
-            f'SELECT * FROM slots_slot s WHERE s.id_station_id = "{id_station}" AND bike_id IS NOT NULL;')]
-        
+    def get_random_slot(id_station, to_rent=False):
+        if to_rent:
+            slots = [SlotSerializer.to_slot(slot, False) for slot in Slot.objects.raw(
+                f'SELECT * FROM slots_slot s WHERE s.id_station_id = "{id_station}" AND bike_id IS NULL;')]
+        else:
+            slots = [SlotSerializer.to_slot(slot, False) for slot in Slot.objects.raw(
+                f'SELECT * FROM slots_slot s WHERE s.id_station_id = "{id_station}" AND bike_id IS NOT NULL;')]
+
         if len(slots) is not 0:
             return slots[0]
-        
+
         return {
             'msg': 'No hay bicicletas disponibles',
             'status': 400
         }
-            
+    
+    def get_slot_instance(id_slot):
+        slot = Slot.objects.filter(id_slot=id_slot)
+        return slot

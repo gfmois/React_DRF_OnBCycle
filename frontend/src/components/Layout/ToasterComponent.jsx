@@ -3,7 +3,13 @@ import { useEffect } from "react";
 import { useToast } from "../../hooks/useToaster";
 
 export default function ToastrComponent() {
-  const { toast, cleanToast } = useToast();
+  const { toast, cleanToast, loadToast } = useToast();
+
+  useEffect(() => {
+    setTimeout(() => {
+      cleanToast();
+    }, 5000);
+  }, [toast]);
 
   const icons = {
     success: (
@@ -61,12 +67,6 @@ export default function ToastrComponent() {
       </div>
     ),
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      cleanToast();
-    }, 5000);
-  }, []);
 
   return (
     toast ? <div className="flex justify-end m-5 z-[100] h-[10%] w-[13%] right-0 absolute float-right">
