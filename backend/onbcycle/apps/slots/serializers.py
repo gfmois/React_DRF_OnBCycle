@@ -7,18 +7,18 @@ from ..bikes.serializers import BikeSerializer
 class SlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Slot
-        fields = ('id_slot', 'id_station', 'state', 'bike_id')
+        fields = ('id_slot', 'id_station', 'status', 'bike_id')
 
     def to_slot(instance: Slot, showStationId: bool = True):
         slot = {
             'id_slot': instance.id_slot,
-            'state': instance.state,
+            'status': instance.status,
             'bike_id': instance.bike_id or None
         }
 
         if showStationId:
-            slot['id_station'] = instance.id_station,
-
+            slot['id_station'] = str(instance.id_station)
+            
         return slot
 
     def getStationSlots(id_station):

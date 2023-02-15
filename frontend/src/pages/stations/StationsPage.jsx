@@ -25,7 +25,6 @@ export default function StationsPage() {
   const changeFormStatus = (actived, details_station) => {
     if (details_station) {
       getAllStation(details_station.id_station)
-      console.log(station);
     }
     dispatch({ type: "CHANGE_FORM", formActived: actived, details_station });
   };
