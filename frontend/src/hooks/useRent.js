@@ -12,6 +12,7 @@ export function useRent() {
                 setBike(data.bike)
             })
             .catch((e) => {
+                console.log(e);
                 loadToast(e.msg, 'error')
             })
     })
@@ -23,6 +24,7 @@ export function useRent() {
                 loadToast(data.msg, data.status == 200 ? 'success' : 'warning')
             })
             .catch((e) => {
+                console.log(e);
                 loadToast(e.response.data.msg, 'warning')
             })
     })
