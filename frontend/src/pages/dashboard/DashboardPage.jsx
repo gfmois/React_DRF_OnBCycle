@@ -9,8 +9,9 @@ export default function DashboardPage() {
     const Users = React.lazy(() => import('../../components/Dashboard/Users/ListUserComponent'))
     const Slots = React.lazy(() => import('../../components/Dashboard/Slots/ListSlotsComponent'))
     const Stations = React.lazy(() => import('../../components/Dashboard/Stations/ListStationsComponent'))
+    const Bikes = React.lazy(() => import('../../components/Dashboard/Bikes/ListBikesComponent'))
 
-    const pages = [<Dashboard key={'Dashboard'} />, <Inbox key={"Inbox"} />, <Users key={"Users"} />, <Slots key={"Slots"} />, <Stations key={"Stations"} />]
+    const pages = [<Dashboard key={'Dashboard'} />, <Inbox key={"Inbox"} />, <Users key={"Users"} />, <Slots key={"Slots"} />, <Stations key={"Stations"}/>, <Bikes key={'Bikes'}/>]
     const pagesNames = pages.map((c, i) => { return { name: c.key, index: i } });
 
     return (
