@@ -18,7 +18,7 @@ export default function FormModalComponent({ cols, changeVisibility, action, ite
         value: item[i],
         label: i,
         name: i,
-        disabled: true
+        disabled: onlyView
       }
     }
 

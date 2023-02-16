@@ -12,6 +12,7 @@ class RentSerializer(serializers.ModelSerializer):
         fields = ('id_rent', 'bike_id', 'start_date', 'end_date')
 
     def rent_bike(id_slot, token, id_station):
+        print('AAA')
         user = UserSerializer.get_user(token)['id_user']
         if len(Rent.objects.raw(f'SELECT * FROM rents_rent r WHERE r.id_user_id = "{user}" AND r.end_date IS NULL;')) > 0:
             return {
@@ -41,7 +42,7 @@ class RentSerializer(serializers.ModelSerializer):
     
     def leave_bike(token, id_bike, id_station):
         user = UserSerializer.get_user(token)['id_user']
-        if len(Rent.objects.filter(id_user=user)) is 0:
+        if len(Rent.objects.filter(id_user=user)) == 0:
             return {
                 'msg': "You don't have active rents",
                 'status': 200
@@ -64,16 +65,21 @@ class RentSerializer(serializers.ModelSerializer):
                 
                 raise ValueError('No rent found for this user')
         except Exception as e:
-            transaction.set_rollback(true)
+            transaction.set_rollback(True)
             return {
                 'msg': f'Error while trying leave the bike: {str(e)}',
                 'status': 400
             }
     
     def get_bike(token):
-        user_id = UserSerializer.get_user(token)['id_user']
         try:
+            user_id = UserSerializer.get_user(token)['id_user']
             rent = Rent.objects.filter(id_user_id=user_id, end_date__isnull=True).first()
+            if rent is None:
+                return {
+                    'msg': 'No bike rented already',
+                    'status': 200
+                }
             return {
                 'bike': str(rent.bike_id.id_bike),
                 'status': 200

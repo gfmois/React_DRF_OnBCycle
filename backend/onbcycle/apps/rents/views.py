@@ -19,11 +19,12 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     def rent_bike(self, request, *args, **kwargs):
         try:
             slot = SlotSerializer.get_random_slot(kwargs['id_station'])
-            if 'status' in slot:
+            if 'msg' and 'status' in slot:
                 return Response(slot, status=status.HTTP_400_BAD_REQUEST)
 
             rent = RentSerializer.rent_bike(
                 slot['id_slot'], request.headers['Authorization'], id_station=kwargs['id_station'])
+            
             return Response(rent, status=status.HTTP_200_OK)
         except:
             return Response({
@@ -35,8 +36,8 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         try:
             serializer = RentSerializer.get_bike(request.headers['Authorization'])
             return Response(serializer)
-        except:
-            return Response('Error')
+        except Exception as e:
+            return Response(e)
         
     def leave_bike(self, request: Request, *args, **kwargs):
         try:

@@ -1,4 +1,5 @@
 export default function DashboardComponent() {
+    // TODO: Make petitions to BD
     return (
         <div className="flex-1 m-2 p-2 w-full h-full text-black">
             <div className="p-4 w-full h-full">
@@ -18,6 +19,7 @@ export default function DashboardComponent() {
                         </div>
                     </div>
                     <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+                        {/* // TODO: Install ChartJS to make an little graphic */}
                         <p className="text-2xl text-gray-400 dark:text-gray-500">CharJS de las reservas por mes del año actual</p>
                     </div>
                 </div>

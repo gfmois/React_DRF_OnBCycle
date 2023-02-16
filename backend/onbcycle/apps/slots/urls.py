@@ -3,4 +3,5 @@ from .views import SlotView
 
 urlpatterns = [
     path('<str:id_station>', SlotView.as_view({ 'get': 'getStationSlots' })),
+    path('', SlotView.as_view({ 'get': 'get_slots' })),
 ]

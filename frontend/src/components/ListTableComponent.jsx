@@ -1,8 +1,10 @@
 import { useState } from "react"
 import FormModalComponent from "./FormModalComponent"
+import StatusComponent from "./StatusCompononet"
 
 export default function ListTableComponent({ items = [], modelMap = true, onlyView = true }) {
     const [itemSelected, setItemSelected] = useState(false)
+    console.log(items);
     return (
         items.length > 0
             ? <>
@@ -20,18 +22,23 @@ export default function ListTableComponent({ items = [], modelMap = true, onlyVi
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((e, i) => {
-                                return <tr className={i % 2 == 0 ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700" : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} key={i}>
-                                    {Object.keys(e).map((k) => <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {e[k]}
-                                    </th>
+                            {items.map((element, index) =>
+                                <tr className={index % 2 == 0 ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700" : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} key={index}>
+                                    {Object.keys(element).map((key) => 
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {key == 'status'
+                                                ? <StatusComponent status={element[key]} />
+                                                : element[key] == null
+                                                    ? <p className="uppercase text-amber-500">Empty</p>
+                                                    : element[key]}
+                                        </th>
                                     )}
                                     <td className="px-6 py-4 flex flex-row gap-4">
-                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(e)}>See</div>
+                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(element)}>See</div>
                                         <div className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">Remove</div>
                                     </td>
                                 </tr>
-                            })}
+                            )}
                         </tbody>
                     </table>
                 </div >
