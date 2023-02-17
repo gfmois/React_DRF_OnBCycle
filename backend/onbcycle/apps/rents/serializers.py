@@ -37,38 +37,43 @@ class RentSerializer(serializers.ModelSerializer):
             return {
                 'msg': 'Rent correctly formed',
                 'bike': id_bike,
-                'status': 200
+                'status': 'success'
             }
     
+    @transaction.atomic()
     def leave_bike(token, id_bike, id_station):
         user = UserSerializer.get_user(token)['id_user']
         if len(Rent.objects.filter(id_user=user)) == 0:
             return {
                 'msg': "You don't have active rents",
-                'status': 200
+                'status': 'success'
             }
         
         try:
-            with transaction.atomic():
-                rent = Rent.objects.filter(id_user=user, end_date__isnull=True)
-                if rent.exists():
-                    slot = SlotSerializer.get_slot_instance(SlotSerializer.get_random_slot(id_station, to_rent=True)['id_slot'])
-                    if slot.exists():
+            rent = Rent.objects.filter(id_user=user, end_date__isnull=True)
+            if rent.exists():
+                slot = SlotSerializer.get_random_slot(id_station, to_rent=True)
+                try:
+                    if ('msg', 'status') not in slot:
+                        slot_instance = SlotSerializer.get_slot_instance(slot['id_slot'])
+                    if slot_instance.exists():
                         rent.update(end_date=datetime.now(), station_to_id=id_station)
-                        slot.update(bike_id=id_bike)
+                        slot_instance.update(bike_id=id_bike)
                         return {
                             'msg': 'You leaved correctly the bike',
-                            'status': 200
+                            'status': 'success'
                         }
+                except:
+                    return slot
                     
-                    raise AssertionError('Error updating rent')
-                
-                raise ValueError('No rent found for this user')
+            
+            raise Exception('No rent found for this user')
         except Exception as e:
             transaction.set_rollback(True)
+            print(e)
             return {
-                'msg': f'Error while trying leave the bike: {str(e)}',
-                'status': 400
+                'msg': 'Error while trying leave the bike',
+                'status': 'error'
             }
     
     def get_bike(token):
@@ -78,14 +83,14 @@ class RentSerializer(serializers.ModelSerializer):
             if rent is None:
                 return {
                     'msg': 'No bike rented already',
-                    'status': 200
+                    'status': 'success'
                 }
             return {
                 'bike': str(rent.bike_id.id_bike),
-                'status': 200
+                'status': 'success'
             }
         except:
             return {
                 'msg': 'Error trying to get user rent',
-                'status': 400
+                'status': 'error'
             }

@@ -11,11 +11,11 @@ class BikeView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     permission_classes = IsAuthenticated
     queryset = Bike.objects.all()
 
-    # def get_permissions(self):
-    #     if self.request.method in ('POST', 'DELETE', 'PUT', 'GET') and not 'id_slot' in self.request.data:
-    #         self.permission_classes = [IsLocalAdmin]
+    def get_permissions(self):
+        if self.request.method in ('POST', 'DELETE', 'PUT', 'GET') and not 'id_slot' in self.request.data:
+            self.permission_classes = [IsLocalAdmin]
 
-    #     return super(BikeView, self).get_permissions()
+        return super(BikeView, self).get_permissions()
 
     def get_bike_from_slot(self, request, *args, **kwargs):
         serializer = BikeSerializer.get_bike_from_slot(kwargs['id_slot'])

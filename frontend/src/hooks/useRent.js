@@ -5,6 +5,7 @@ import { useToast } from "./useToaster"
 export function useRent() {
     const { loadToast, toast } = useToast()
     const [bike, setBike] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
 
     const getReservedBike = useCallback(() => {
         RentService.getReservedBike()
@@ -12,19 +13,22 @@ export function useRent() {
                 setBike(data.bike)
             })
             .catch((e) => {
-                loadToast(e.response.data.msg, 'error')
+                console.log(e);
+                loadToast(e.response.data.msg, e.response.data.status)
             })
     })
 
     const reserveBike = useCallback((stationID) => {
-        RentService.reserveBike(stationID)
+            setIsLoading(true)
+            RentService.reserveBike(stationID)
             .then(({ data }) => {
                 setBike(data.bike)
-                loadToast(data.msg, data.status == 200 ? 'success' : 'warning')
+                loadToast(data.msg, data.status)
+                setIsLoading(false)
             })
             .catch((e) => {
                 console.log(e);
-                loadToast(e.response.data.msg, 'warning')
+                loadToast(e.response.data.msg, e.response.data.status)
             })
     })
 
@@ -32,15 +36,16 @@ export function useRent() {
         RentService.leaveBike(bikeId, stationId)
             .then(({ data }) => {
                 console.log(data);
-                loadToast(data.msg, 'success')
+                loadToast(data.msg, data.status)
                 setBike(null)
             })
             .catch((e) => {
+                loadToast(e.response.data.msg, e.response.data.status)
                 console.log(e);
             })
     })
 
     useEffect(() => { getReservedBike() }, [])
 
-    return { bike, setBike, leaveBike, reserveBike, getReservedBike }
+    return { bike, setBike, leaveBike, reserveBike, getReservedBike, isLoading, setIsLoading }
 }

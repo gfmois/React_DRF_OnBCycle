@@ -42,10 +42,9 @@ export default function StationItem({ station, changeFormStatus }) {
             <AnimatePresence>
               <motion.span
                 key="stateBox"
-                initial={{ scale: 0.5, opacity: 1 }}
-                animate={{ scale: 1.5, opacity: 1 }}
+                initial={{ scale: 0.5 }}
+                animate={{ scale: 1.5 }}
                 exit={{
-                  opacity: 1,
                   scale: 0.5,
                 }}
                 transition={{

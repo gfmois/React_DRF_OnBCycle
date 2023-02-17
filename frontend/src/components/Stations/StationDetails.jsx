@@ -14,6 +14,7 @@ import { CgKeyhole } from "react-icons/cg"
 
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useRent } from "../../hooks/useRent";
 
 export default function StationDetails({
   visible,
@@ -27,12 +28,25 @@ export default function StationDetails({
   const { user } = useAuth()
   const [showMap, setShowMap] = useState(false);
   const [isRenting, setIsRenting] = useState(false)
- 
+  const [avaBikes, setAvaBikes] = useState(item.slots.filter((e) => e.bike_id != null).length)
+  const { isLoading, setIsLoading } = useRent()
+
   useEffect(() => {
     setTimeout(() => {
       setShowMap(!showMap);
     }, 600);
   }, []);
+
+  useEffect(() => {
+    console.log(isLoading);
+    if (!isLoading) {
+      let bikes = avaBikes
+      console.log(bikes, bikes--);
+      setAvaBikes(bikes--)
+    }
+  }, [isLoading])
+
+  // TODO: Update item values on rent
 
   return visible ? (
     <>
@@ -109,10 +123,7 @@ export default function StationDetails({
                 </div>
                 <div className="border border-black rounded-full xs:w-36 xs:h-36 w-1/2 lg:w-48 lg:h-48 h-full p-6 flex items-center justify-center bg-gray-500 flex-col gap-5">
                   <GiDutchBike color="black" size="5rem" />
-                  {
-                    item.slots.filter((e) => Object.keys(e.bike).length > 0)
-                      .length
-                  }
+                  {avaBikes}
                 </div>
                 {
                   user
@@ -167,7 +178,10 @@ export default function StationDetails({
                   </div>
                   {
                     user ? <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1 cursor-pointer">
-                      <CgKeyhole color="black" size="3.5rem" onClick={() => setIsRenting(true)} />
+                      <CgKeyhole color="black" size="3.5rem" onClick={() => {
+                        setIsRenting(true)
+                        setAvaBikes(100)
+                      }} />
                       <p className="text-black text-xs font-bold">Rent a Bike</p>
                     </div> : <div className="flex-1 flex flex-col items-center justify-center bg-gray-200 text-center h-full rounded-full gap-1 cursor-pointer">
                       <CgKeyhole color="black" size="3.5rem" onClick={() => navigate('/auth')} />

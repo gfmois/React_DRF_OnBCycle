@@ -19,7 +19,7 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     def rent_bike(self, request, *args, **kwargs):
         try:
             slot = SlotSerializer.get_random_slot(kwargs['id_station'])
-            if 'msg' and 'status' in slot:
+            if ('msg','status') in slot:
                 return Response(slot, status=status.HTTP_400_BAD_REQUEST)
 
             rent = RentSerializer.rent_bike(
@@ -40,18 +40,5 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             return Response(e)
         
     def leave_bike(self, request: Request, *args, **kwargs):
-        try:
-            if request.headers['Authorization']:
-                try:
-                    serializer = RentSerializer.leave_bike(request.headers['Authorization'], request.data['bike'], request.data['station'])
-                    return Response(serializer)
-                except Exception as e: 
-                    return Response({
-                        'msg': f'Error ocurred while leaving the bike',
-                        'status': 400
-                    })
-        except:
-            return Response({
-                'msg': 'No token found',
-                'status': 401
-            })
+        serializer = RentSerializer.leave_bike(request.headers['Authorization'], request.data['bike'], request.data['station'])
+        return Response(serializer)

@@ -59,5 +59,5 @@ export function useStations() {
 
     useEffect(() => { getStations() }, [])
 
-    return { stations, station, cols, getStations, getStationsCols, addStation, getAllStation, setStations }
+    return { stations, station, cols, getStations, getStationsCols, addStation, getAllStation, setStations, setStation }
 }

@@ -3,7 +3,7 @@ import { useStations } from "../../../hooks/useStation";
 import { useEffect, useState } from "react";
 
 export default function ListStationsComponent() {
-    const { stations, setStations } = useStations()
+    const { stations } = useStations()
     const [c_stations, setCStations] = useState([])
 
     useEffect(() => {
