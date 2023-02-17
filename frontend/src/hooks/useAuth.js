@@ -54,18 +54,24 @@ export function useAuth() {
     (credentials) => {
       AuthService.login(credentials)
         .then(({ data }) => {
-          setUser({
-            avatar: data.avatar,
-            name: data.name,
-            role: data.role,
-            email: data.email
-          })
-          JWTService.saveToken(data.token);
-          JWTService.saveRefreshToken(data.refresh_token)
-          setJwt(data.token);
-          setRefreshJwt(data.refresh_token)
-          loadToast(`Welcome back ${data.name}`, 'success')
-          navigate("/stations");
+          if (!data.msg && !data.status) {
+            setUser({
+              avatar: data.avatar,
+              name: data.name,
+              role: data.role,
+              email: data.email
+            })
+            JWTService.saveToken(data.token);
+            JWTService.saveRefreshToken(data.refresh_token)
+            setJwt(data.token);
+            setRefreshJwt(data.refresh_token)
+            loadToast(`Welcome back ${data.name}`, 'success')
+            navigate("/stations");
+          }
+          else {
+            loadToast(data.msg, 'error')
+          }
+
         })
         .catch((e) => {
           loadToast(e, 'error')

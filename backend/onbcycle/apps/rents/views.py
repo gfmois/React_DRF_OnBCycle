@@ -6,6 +6,7 @@ from .serializers import RentSerializer
 from ..slots.serializers import SlotSerializer
 from .models import Rent
 from rest_framework.permissions import (IsAuthenticated)
+from ..core.permisions import local_admin_required
 from rest_framework import status
 
 # Create your views here.
@@ -15,7 +16,7 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     serializer_class = RentSerializer
     queryset = Rent.objects.all()
     permission_classes = [IsAuthenticated]
-
+    
     def rent_bike(self, request, *args, **kwargs):
         try:
             slot = SlotSerializer.get_random_slot(kwargs['id_station'])
@@ -42,3 +43,8 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     def leave_bike(self, request: Request, *args, **kwargs):
         serializer = RentSerializer.leave_bike(request.headers['Authorization'], request.data['bike'], request.data['station'])
         return Response(serializer)
+    
+    @local_admin_required
+    def get_rents(self, request, *args, **kwargs):
+        user = request.user
+        return Response('aaa')

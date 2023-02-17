@@ -46,6 +46,10 @@ class UserSerializer(serializers.ModelSerializer):
                 'msg': 'Error on decode token',
                 'status': 400
             }
+        
+    def get_user_by_email(email):
+        return UserSerializer.to_user(User.objects.filter(email=email).first())
+        
 
     def get_users():
         users = []
