@@ -6,6 +6,7 @@ export function useRent() {
     const { loadToast, toast } = useToast()
     const [bike, setBike] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [rents, setRents] = useState([])
 
     const getReservedBike = useCallback(() => {
         RentService.getReservedBike()
@@ -45,7 +46,18 @@ export function useRent() {
             })
     })
 
-    useEffect(() => { getReservedBike() }, [])
+    const getAllReserves = useCallback(() => {
+        RentService.getAllReserves()
+            .then(({ data }) => {
+                setRents(data)
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+    })
 
-    return { bike, setBike, leaveBike, reserveBike, getReservedBike, isLoading, setIsLoading }
+    useEffect(() => { getReservedBike() }, [])
+    useEffect(() => { getAllReserves() }, [])
+
+    return { bike, setBike, leaveBike, reserveBike, getReservedBike, isLoading, setIsLoading, rents }
 }

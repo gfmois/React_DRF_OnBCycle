@@ -1,6 +1,7 @@
 import Header from "./components/Layout/HeaderComponent";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { Suspense } from "react";
+import AdminGuard from "./services/guards/AdminGuard";
 
 import "./App.css";
 
@@ -30,9 +31,9 @@ export default function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/stations" element={<Stations />} />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/dashboard" element={<Suspense fallback={<>Loading...</>}>
+                  <Route path="/dashboard" element={<AdminGuard/>}>
                     <Dashboard />
-                  </Suspense>} />
+                  </Route>
                 </Routes>
               </Suspense>
             </div>

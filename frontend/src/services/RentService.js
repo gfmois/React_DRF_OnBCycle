@@ -12,6 +12,9 @@ const RentService = {
     },
     getReservedBike() {
         return Http().get('rents/getRentedBike')
+    },
+    getAllReserves() {
+        return Http().get('rents/getRents')
     }
 }
 

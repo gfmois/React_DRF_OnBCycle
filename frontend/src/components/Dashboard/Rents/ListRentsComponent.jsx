@@ -1,3 +1,9 @@
+import ListTableComponent from "../../ListTableComponent"
+import { useRent } from "../../../hooks/useRent"
+
 export default function ListRentsComponent() {
-    return <h1>A</h1>
+    const { rents } = useRent()
+    return (
+        <ListTableComponent items={rents} onlyView={true} modelMap={false} />
+    )
 }

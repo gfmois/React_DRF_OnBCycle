@@ -9,7 +9,17 @@ from ..users.serializers import UserSerializer
 class RentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rent
-        fields = ('id_rent', 'bike_id', 'start_date', 'end_date')
+        fields = ('id_rent', 'bike_id', 'start_date', 'end_date', 'station_from', 'station_to')
+        
+    def to_rent(instance):
+        return {
+            'id_rent': instance.id_rent,
+            'bike_id': instance.bike_id.id_bike,
+            'start_date': instance.start_date,
+            'end_date': instance.end_date,
+            'station_from': str(instance.station_from.id_station),
+            'station_to': str(instance.station_to.id_station)
+        }
 
     def rent_bike(id_slot, token, id_station):
         print('AAA')

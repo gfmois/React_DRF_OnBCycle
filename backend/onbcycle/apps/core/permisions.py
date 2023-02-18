@@ -12,21 +12,23 @@ class IsLocalAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         if type(request.user) is AnonymousUser:
             return False
+        
         return request.user and request.user.role == 'Admin'
         
-def is_local_admin(user):
-    return UserSerializer.get_user_by_email(user)['role'] == 'Admin'
+# def is_local_admin(user):
+#     if user:
+#         return UserSerializer.get_user_by_email(user)['role'] == 'Admin'
+#     return False
 
-def local_admin_required(v_func):
-    decorated_v_func = user_passes_test(is_local_admin)
+# def local_admin_required(v_func):
+#     decorated_v_func = user_passes_test(is_local_admin)
     
-    def wrapper(self, request, *args, **kwargs):
-        if not is_local_admin(request.user):
-            return HttpResponseForbidden('You are not Administrator of this site')
+#     def wrapper(self, request, *args, **kwargs):
+#         if not is_local_admin(request.user):
+#             return HttpResponseForbidden('You are not Administrator of this site')
         
-        print(v_func)
-        return decorated_v_func(v_func)(self, request, *args, **kwargs)
+#         return decorated_v_func(v_func)(self, request, *args, **kwargs)
 
-    return wrapper
+#     return wrapper
 
         
