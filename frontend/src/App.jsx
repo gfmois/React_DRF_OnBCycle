@@ -1,5 +1,5 @@
 import Header from "./components/Layout/HeaderComponent";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import React, { Suspense } from "react";
 import AdminGuard from "./services/guards/AdminGuard";
 
@@ -17,6 +17,7 @@ export default function App() {
   const Stations = React.lazy(() => import("./pages/stations/StationsPage"));
   const Auth = React.lazy(() => import("./pages/auth/AuthPage"));
   const Dashboard = React.lazy(() => import('./pages/dashboard/DashboardPage'))
+  const Profile = React.lazy(() => import("./pages/profile/ProfilePage"))
 
   return (
     <BrowserRouter>
@@ -31,8 +32,9 @@ export default function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/stations" element={<Stations />} />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/dashboard" element={<AdminGuard/>}>
-                    <Dashboard />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route element={<AdminGuard />} >
+                    <Route path="/dashboard" element={<Dashboard />} />
                   </Route>
                 </Routes>
               </Suspense>

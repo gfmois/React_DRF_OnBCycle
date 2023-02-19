@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'onbcycle.apps.slots',
     'onbcycle.apps.bikes',
     'onbcycle.apps.rents',
-    'onbcycle.apps.users'
+    'onbcycle.apps.users',
+    'onbcycle.apps.notifications'
 ]
 
 MIDDLEWARE = [

@@ -22,5 +22,6 @@ urlpatterns = [
     path('slots/', include('onbcycle.apps.slots.urls')),
     path('bikes/', include('onbcycle.apps.bikes.urls')),
     path('rents/', include('onbcycle.apps.rents.urls')),
-    path('auth/', include('onbcycle.apps.users.urls'))
+    path('auth/', include('onbcycle.apps.users.urls')),
+    path('notifications/', include('onbcycle.apps.notifications.urls'))
 ]

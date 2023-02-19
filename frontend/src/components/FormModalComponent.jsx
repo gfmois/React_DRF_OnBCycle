@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import MapComponent from "./Map/MapComponent";
 import { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
+import SendNotificationComponent from "./Notifications/SendNotificationComponent";
 
-export default function FormModalComponent({ cols, changeVisibility, action, item = {}, showMap = true, onlyView = false }) {
+export default function FormModalComponent({ cols, changeVisibility, action, item = {}, showMap = true, onlyView = false, sendNotiButton = false, loadNotification }) {
   const [isMapVisible, setMapVisible] = useState(false);
+  const [sendNotification, setSendNotification] = useState(false)
   const [markerItem, setMarkerItem] = useState();
   const items = cols.map((i) => {
     if (typeof i != 'object') {
@@ -106,77 +108,81 @@ export default function FormModalComponent({ cols, changeVisibility, action, ite
       />
     </div>
   ) : (
-    <div className="wrapper z-50">
-      <div className="h-full w-full z-50 absolute flex justify-center top-20 right-0 left-0 bottom-0">
-        <div className="border-[3px] border-[#3f3f3f] dark:bg-[#212121] bg-red-700 w-3/4 h-1/2 rounded-xl">
-          <form className="w-full h-full grid gap-6 grid-cols-1 sm:grid-cols-2 p-2">
-            {items.map((item, index) => {
-              return (
-                <div
-                  className="group relative flex items-start justify-center flex-col capitalize"
-                  key={index}
-                >
-                  <label
-                    htmlFor={item.id}
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    <>
+      <div className="wrapper z-50">
+        <div className="h-full w-full z-50 absolute flex justify-center top-20 right-0 left-0 bottom-0">
+          <div className="border-[3px] border-[#3f3f3f] dark:bg-[#212121] bg-red-700 w-3/4 h-1/2 rounded-xl">
+            <form className="w-full h-full grid gap-6 grid-cols-1 sm:grid-cols-2 p-2">
+              {items.map((item, index) => {
+                return (
+                  <div
+                    className="group relative flex items-start justify-center flex-col capitalize"
+                    key={index}
                   >
-                    {item.label}
-                  </label>
-                  {item.type != "bool" ? (
-                    <input
-                      type={item.type}
-                      id={item.id}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder={item.disabled ? item.value : item.placeholder}
-                      {...register(item.name, {
-                        required: item.required,
-                        minLength: item.minLength,
-                        maxLength: item.maxLength,
-                        value: item.value,
-                        disabled: item.disabled || false
-                      })}
-                      autoComplete="off"
-                    />
-                  ) : (
-                    <select
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      readOnly
-                      {...register(item.name, {
-                        required: item.required,
-                        minLength: item.minLength,
-                        maxLength: item.maxLength,
-                      })}
+                    <label
+                      htmlFor={item.id}
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      <option value="-" disabled>
-                        Select an Option
-                      </option>
-                      <option value="true">On</option>
-                      <option value="false">Off</option>
-                    </select>
-                  )}
-                </div>
-              );
-            })}
-            <div className="btns w-full h-full flex justify-end items-end">
-              {showMap ? <ButtonComponent
-                text="Open Maps"
-                action={() => setMapVisible(true)}
-                style="green"
-              /> : null}
-              {!onlyView ? <ButtonComponent
-                text="Save"
-                action={handleSubmit(onSubmit)}
-                style="default"
-              /> : null}
-              <ButtonComponent
-                text="Back"
-                style="red"
-                action={() => changeVisibility(false)}
-              />
-            </div>
-          </form>
+                      {item.label}
+                    </label>
+                    {item.type != "bool" ? (
+                      <input
+                        type={item.type}
+                        id={item.id}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder={item.disabled ? item.value : item.placeholder}
+                        {...register(item.name, {
+                          required: item.required,
+                          minLength: item.minLength,
+                          maxLength: item.maxLength,
+                          value: item.value,
+                          disabled: item.disabled || false
+                        })}
+                        autoComplete="off"
+                      />
+                    ) : (
+                      <select
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        readOnly
+                        {...register(item.name, {
+                          required: item.required,
+                          minLength: item.minLength,
+                          maxLength: item.maxLength,
+                        })}
+                      >
+                        <option value="-" disabled>
+                          Select an Option
+                        </option>
+                        <option value="true">On</option>
+                        <option value="false">Off</option>
+                      </select>
+                    )}
+                  </div>
+                );
+              })}
+              <div className="btns w-full h-full flex justify-end items-end">
+                {!showMap || <ButtonComponent
+                  text="Open Maps"
+                  action={() => setMapVisible(true)}
+                  style="green"
+                />}
+                {onlyView || <ButtonComponent
+                  text="Save"
+                  action={handleSubmit(onSubmit)}
+                  style="default"
+                />}
+                {!sendNotiButton || <ButtonComponent style='yellow' text='Send Notification' action={() => setSendNotification(true)} />}
+                <ButtonComponent
+                  text="Back"
+                  style="red"
+                  action={() => changeVisibility(false)}
+                />
+              </div>
+            </form>
+          </div>
         </div>
+        { sendNotification && <SendNotificationComponent sendAction={loadNotification} backAction={setSendNotification} /> }
       </div>
-    </div>
+    </>
   );
 }

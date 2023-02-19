@@ -28,6 +28,7 @@ export function AuthContextProvider({ children }) {
         JWTService.removeToken()
         JWTService.removeRefreshToken()
         setUser(null)
+        setIsAdmin(false)
       })
   }
 

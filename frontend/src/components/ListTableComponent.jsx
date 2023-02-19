@@ -1,14 +1,23 @@
 import { useState } from "react"
 import FormModalComponent from "./FormModalComponent"
-import StatusComponent from "./StatusCompononet"
 
-export default function ListTableComponent({ items = [], modelMap = true, onlyView = true }) {
+export default function ListTableComponent({ items = [], modelMap = true, onlyView = true, sendNotification = false, notificationAction }) {
     const [itemSelected, setItemSelected] = useState(false)
-    console.log(items);
+
+    const loadNotification = (notificationData) => {
+        if (itemSelected.email) {
+            let data = { ...notificationData, to: itemSelected.email }
+            notificationAction(data)
+            return
+        }
+
+        throw new Error("Error not user")
+    }
+
     return (
         items.length > 0
             ? <>
-                {itemSelected ? <FormModalComponent showMap={modelMap} onlyView={onlyView} cols={Object.keys(itemSelected)} changeVisibility={() => setItemSelected(false)} item={itemSelected} /> : null}
+                {itemSelected ? <FormModalComponent loadNotification={loadNotification} sendNotiButton={sendNotification} showMap={modelMap} onlyView={onlyView} cols={Object.keys(itemSelected)} changeVisibility={() => setItemSelected(false)} item={itemSelected} /> : null}
                 <div className="relative overflow-x-auto sm:rounded-lg shadow-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -24,7 +33,7 @@ export default function ListTableComponent({ items = [], modelMap = true, onlyVi
                         <tbody>
                             {items.map((element, index) =>
                                 <tr className={index % 2 == 0 ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700" : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} key={index}>
-                                    {Object.keys(element).map((key) => 
+                                    {Object.keys(element).map((key) =>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {key == 'status'
                                                 ? <StatusComponent status={element[key]} />

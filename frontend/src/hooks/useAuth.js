@@ -64,6 +64,7 @@ export function useAuth() {
             JWTService.saveToken(data.token);
             JWTService.saveRefreshToken(data.refresh_token)
             setJwt(data.token);
+            setIsAdmin(data.role == 'Admin')
             setRefreshJwt(data.refresh_token)
             loadToast(`Welcome back ${data.name}`, 'success')
             navigate("/stations");

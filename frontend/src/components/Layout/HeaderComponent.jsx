@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth"
 import UserDropDown from "./UserDropDown";
+import NotificationDropDown from "../Notifications/NotificationDropDown";
 
 export default function Header() {
   const [isUserDropVisible, setIsUserDropVisible] = useState(false);
@@ -10,7 +11,7 @@ export default function Header() {
   return (
     <nav className="bg-rose-600 border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-rose-600">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
-        <a href="http://localhost:5173" className="flex items-center">
+        <a href={!user ? 'http://localhost:5173' : "http://localhost:5173/stations"} className="flex items-center">
           <img
             src="/logo_onbcycle.png"
             className="h-6 mr-3 sm:h-9"
@@ -20,7 +21,6 @@ export default function Header() {
             OnBCycle
           </span>
         </a>
-        <UserDropDown logout={logout} isAdmin={isAdmin} user={user} action={setIsUserDropVisible} isVisible={isUserDropVisible} />
         <div
           className="items-center hidden justify-between w-full md:flex md:w-auto md:order-1"
           id="mobile-menu-2"
@@ -76,6 +76,10 @@ export default function Header() {
               </a>
             </li>
           </ul>
+        </div>
+        <div className="md:order-2 flex items-center justify-center gap-4">
+          <UserDropDown logout={logout} isAdmin={isAdmin} user={user} action={setIsUserDropVisible} isVisible={isUserDropVisible} />
+          <NotificationDropDown/>
         </div>
       </div>
     </nav>
