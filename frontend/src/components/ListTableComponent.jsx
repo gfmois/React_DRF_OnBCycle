@@ -1,7 +1,8 @@
 import { useState } from "react"
 import FormModalComponent from "./FormModalComponent"
+import StatusComponent from "./StatusCompononet";
 
-export default function ListTableComponent({ items = [], modelMap = true, onlyView = true, sendNotification = false, notificationAction }) {
+export default function ListTableComponent({ items = [], modelMap = true, onlyView = true, sendNotification = false, notificationAction, openModal = true }) {
     const [itemSelected, setItemSelected] = useState(false)
 
     const loadNotification = (notificationData) => {
@@ -17,7 +18,23 @@ export default function ListTableComponent({ items = [], modelMap = true, onlyVi
     return (
         items.length > 0
             ? <>
-                {itemSelected ? <FormModalComponent loadNotification={loadNotification} sendNotiButton={sendNotification} showMap={modelMap} onlyView={onlyView} cols={Object.keys(itemSelected)} changeVisibility={() => setItemSelected(false)} item={itemSelected} /> : null}
+                // TODO: Fixme, Not working
+                {!itemSelected || openModal 
+                    ? (
+                        <FormModalComponent
+                            loadNotification={loadNotification}
+                            sendNotiButton={sendNotification}
+                            showMap={modelMap}
+                            onlyView={onlyView}
+                            cols={Object.keys(itemSelected)}
+                            changeVisibility={() => setItemSelected(false)}
+                            item={itemSelected}
+                        />
+                    ) 
+                    : (
+                        <h1>A</h1>
+                    )
+                }
                 <div className="relative overflow-x-auto sm:rounded-lg shadow-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -43,7 +60,7 @@ export default function ListTableComponent({ items = [], modelMap = true, onlyVi
                                         </th>
                                     )}
                                     <td className="px-6 py-4 flex flex-row gap-4">
-                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(element)}>See</div>
+                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(element)}>{openModal ? "See" : "Reply"}</div>
                                         <div className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">Remove</div>
                                     </td>
                                 </tr>

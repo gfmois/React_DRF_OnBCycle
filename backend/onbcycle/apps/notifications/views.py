@@ -11,6 +11,10 @@ class NotificationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Notification.objects.all()
     
-    def send_notification(self, request, *args, **kwargs):
+    def send_notification(self, request):
         serializer = NotificationSerializer.send_notification(request.user, request.data)
+        return Response(serializer)
+    
+    def get_user_notifications(self, request):
+        serializer = NotificationSerializer.get_user_notifications(request.user)
         return Response(serializer)

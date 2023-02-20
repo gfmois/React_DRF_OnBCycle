@@ -17,7 +17,7 @@ export default function SendNotificationComponent({ backAction, sendAction }) {
                     </div>
                     <div className="col-span-2"></div>
                     <div className="w-full h-full col-span-1 flex items-center justify-center">
-                        <ButtonComponent style="default" text="Send Notification" action={() => sendAction(notificationValue)} />
+                        <ButtonComponent style="default" text="Send Notification" action={() => { sendAction(notificationValue); backAction(false) }} />
                         <ButtonComponent style="red" text="Back"  action={() => backAction(false)} />
                     </div>
                 </div>

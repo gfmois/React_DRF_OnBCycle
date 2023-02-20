@@ -2,13 +2,15 @@ import ListTableComponent from "../../ListTableComponent";
 import FormModalComponent from "../../FormModalComponent"
 import { useEffect, useState } from "react"
 import { useAuth } from "../../../hooks/useAuth";
+import { useNotifications } from "../../../hooks/useNotifications"
 
 export default function ListUserComponent() {
     // TODO: Set delete function and update function
     const { getUsers, usersList } = useAuth()
+    const { sendNotification } = useNotifications()
 
     const loadNotification = (notificationData) => {
-        console.log(notificationData);
+        sendNotification(notificationData)
     }
 
     useEffect(() => {
