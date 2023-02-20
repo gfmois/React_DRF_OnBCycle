@@ -18,3 +18,42 @@ class BikeSerializer(serializers.ModelSerializer):
     def get_bike_from_slot(id_bike):
         bike = Bike.objects.filter(id_bike=id_bike).first()
         return BikeSerializer.to_bike(bike)
+    
+    def remove_bike(id_bike):
+        try:
+            if Bike.objects.filter(id_bike=id_bike).delete():
+                return {
+                    'msg': 'Bike removed correctly',
+                    'status': 'success'
+                }
+            
+            return {
+                'msg': 'No bike found with this ID',
+                'status': 'warning'
+            }
+        except Exception as e:
+            return {
+                'msg': f'Error: {e}',
+                'status': "error"
+            }
+    
+    def update_bike(bike):
+        try:
+            if Bike.objects.filter(id_bike=bike['id_bike']).update(
+                id_bike=bike['id_bike'],
+                status=1 if str(bike['status']).capitalize() == 'True' else 0
+            ):
+                return {
+                    'msg': f'Bike {bike["id_bike"]} Updated',
+                    'status': 'success'
+                }
+            
+            return {
+                'msg': 'Error updating',
+                'status': 'error'
+            }
+        except Exception as e:
+            return {
+                'msg': f'Error: {e}',
+                'status': 'error'
+            }

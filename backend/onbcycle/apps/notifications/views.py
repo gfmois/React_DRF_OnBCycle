@@ -18,3 +18,10 @@ class NotificationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     def get_user_notifications(self, request):
         serializer = NotificationSerializer.get_user_notifications(request.user)
         return Response(serializer)
+
+    def get_notification(self, request, *args, **kwargs):
+        return Response(NotificationSerializer.get_notification_by_id(kwargs['id_notification']))
+    
+    def read_notification(self, request, *args, **kwargs):
+        return Response(NotificationSerializer.read_notification(kwargs['id_notification']))
+        

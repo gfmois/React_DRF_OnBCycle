@@ -23,3 +23,6 @@ class BikeView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
     def get_bikes(self, request):
         return Response([BikeSerializer.to_bike(bike) for bike in self.queryset])
+
+    def update_bike(self, request):
+        return Response(BikeSerializer.update_bike(request.data))

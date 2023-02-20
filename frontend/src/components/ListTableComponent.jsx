@@ -1,39 +1,59 @@
 import { useState } from "react"
 import FormModalComponent from "./FormModalComponent"
 import StatusComponent from "./StatusCompononet";
+import SendNotificationComponent from "./Notifications/SendNotificationComponent";
+import { useNotifications } from "../hooks/useNotifications"
 
-export default function ListTableComponent({ items = [], modelMap = true, onlyView = true, sendNotification = false, notificationAction, openModal = true }) {
+export default function ListTableComponent({ 
+    items = [], 
+    modelMap = true, 
+    onlyView = true, 
+    sendNotification = false, 
+    notificationAction, 
+    openModal = true, 
+    removeAction, 
+    removeBtn = true,
+    updateAction
+ }) {
     const [itemSelected, setItemSelected] = useState(false)
+    const [replyModal, setReplyModal] = useState(false)
+    const { notification, getNotification, loading } = useNotifications()
 
-    const loadNotification = (notificationData) => {
+    const loadNotification = async (notificationData) => {
+        let data
         if (itemSelected.email) {
-            let data = { ...notificationData, to: itemSelected.email }
-            notificationAction(data)
-            return
+            data = { ...notificationData, to: itemSelected.email }
+        } else {
+            getNotification(replyModal.id_notification)
+            console.log(notification);
+            if (!loading) {
+                data = { ...notificationData, to: notification.from }
+            } else {
+                throw new Error('No Notification Received')
+            }
+
         }
 
-        throw new Error("Error not user")
+        notificationAction(data)
     }
 
     return (
         items.length > 0
             ? <>
-                // TODO: Fixme, Not working
-                {!itemSelected || openModal 
+                {itemSelected
                     ? (
                         <FormModalComponent
                             loadNotification={loadNotification}
-                            sendNotiButton={sendNotification}
+                            sendNotiButton={!replyModal ? sendNotification : false}
                             showMap={modelMap}
                             onlyView={onlyView}
+                            action={updateAction}
                             cols={Object.keys(itemSelected)}
                             changeVisibility={() => setItemSelected(false)}
                             item={itemSelected}
                         />
-                    ) 
-                    : (
-                        <h1>A</h1>
                     )
+                    : !replyModal || <SendNotificationComponent sendAction={loadNotification} backAction={setReplyModal} />
                 }
                 <div className="relative overflow-x-auto sm:rounded-lg shadow-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -48,22 +68,28 @@ export default function ListTableComponent({ items = [], modelMap = true, onlyVi
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((element, index) =>
-                                <tr className={index % 2 == 0 ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700" : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} key={index}>
+                            {/* // TODO: FIXME STATUS COMPONENT NOT UPDATING */}
+                            {items.map((element, index) => {
+                                return <tr className={index % 2 == 0 ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700" : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"} key={index}>
                                     {Object.keys(element).map((key) =>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {key == 'status'
                                                 ? <StatusComponent status={element[key]} />
                                                 : element[key] == null
                                                     ? <p className="uppercase text-amber-500">Empty</p>
-                                                    : element[key]}
+                                                    : key == "body"
+                                                        ? `${element[key].slice(0, 10)}...`
+                                                        : element[key]
+                                            }
                                         </th>
                                     )}
                                     <td className="px-6 py-4 flex flex-row gap-4">
-                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(element)}>{openModal ? "See" : "Reply"}</div>
-                                        <div className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">Remove</div>
+                                        {openModal || <div className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline cursor-pointer" onClick={() => setReplyModal(element)}>Reply</div>}
+                                        <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setItemSelected(element)}>See</div>
+                                        {!removeBtn || <div className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer" onClick={() => removeAction(element)}>Remove</div>}
                                     </td>
                                 </tr>
+                            }
                             )}
                         </tbody>
                     </table>

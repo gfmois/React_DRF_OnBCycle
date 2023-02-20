@@ -6,6 +6,12 @@ const NotificationsSerivce = {
     },
     getUserNotifications: () => {
         return Http().get('notifications/get_user_notifications')
+    },
+    getNotificationByID: (idNotification) => {
+        return Http().get(`notifications/get_notification/${idNotification}`)
+    },
+    removeNotification: (notificationID) => {
+        return Http().put(`notifications/read_notification/${notificationID}`)
     }
 }
 
