@@ -17,7 +17,8 @@ export function useBikes() {
     const updateBike = useCallback((bikeData) => {
         BikeService.updateBike(bikeData)
             .then(({ data }) => {
-                setBikes([...bikes.map((e, i) => e.id_bike == bikeData ? e = bikeData : e)])
+                bikes[bikes.findIndex(e => e.id_bike == bikeData.id_bike)] = { ...bikeData, status: Boolean(bikeData.status) }
+                setBikes([...bikes])
                 loadToast(data.msg, data.status)
             })
             .catch((e) => {

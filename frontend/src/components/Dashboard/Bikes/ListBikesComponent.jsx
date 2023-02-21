@@ -5,7 +5,6 @@ export default function ListBikesComponent() {
     const { bikes, updateBike } = useBikes()
 
     const update = (data) => {
-        console.log(data);
         updateBike(data)
     }
 
