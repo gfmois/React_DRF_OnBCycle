@@ -91,42 +91,6 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             "status": 200
         }, status=status.HTTP_200_OK)
 
-    def update(self, request: Request, *args, **kwargs):
-        id = kwargs['id_station']
-        station = Station.objects.get(id_station=id)
-        newStationInfo = {
-            'name': request.data.get('name'),
-            'lat': request.data.get('lat'),
-            'long': request.data.get('long'),
-            'capacity': request.data.get('capacity'),
-            'status': request.data.get('status') or 0,
-            'city': request.data.get('city'),
-            'image': request.data.get('image'),
-            'type': request.data.get('type')
-        }
-
-        needs = []
-        for key in newStationInfo.keys():
-            if newStationInfo[key] is None:
-                needs.append(key + ' is not in the object, please add it.')
-
-        if len(needs) != 0:
-            return Response({
-                "msg": needs,
-                "status": 400
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        if station is None:
-            return Response({
-                "msg": "The station does not exists",
-                "status": 400
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        for key in newStationInfo.keys():
-            setattr(station, key, newStationInfo[key])
-
-        station.save()
-        return Response({
-            "msg": "The station has been updated",
-            "status": 200
-        }, status=status.HTTP_200_OK)
+    def update_station(self, request):
+        serializer = StationSerializer.update_station(request.data)
+        return Response(serializer)

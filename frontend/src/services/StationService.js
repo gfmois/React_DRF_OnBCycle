@@ -17,6 +17,12 @@ const StationService = {
     getFullStation(stationID) {
         return Http().get(`stations/info/${stationID}`)
     },
+    updateStation(station) {
+        return Http().post('/stations/update_station', station)
+    },
+    removeStation(stationID) {
+        return Http().delete(`stations/delete/${stationID}`)
+    }
 }
 
 export default StationService;

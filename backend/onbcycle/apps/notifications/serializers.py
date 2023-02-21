@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Q
 from datetime import datetime
 from ..users.serializers import UserSerializer
 from .models import Notification
@@ -11,7 +12,6 @@ class NotificationSerializer(serializers.ModelSerializer):
                   'title', 'body', 'send_date', 'read')
 
     def to_notification(instance, to_view=True):
-        print(instance)
         try:
             if to_view:
                 fecha = datetime.strptime(
@@ -70,9 +70,8 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     def get_user_notifications(email):
         try:
-            id_user = UserSerializer.get_user_by_email(email)['id_user']
-            notifications = [NotificationSerializer.to_notification(
-                notification) for notification in Notification.objects.filter(to_user_id=id_user, read=0)]
+            user = UserSerializer.get_user_by_email(email)
+            notifications = [NotificationSerializer.to_notification(notification) for notification in Notification.objects.filter(Q(to_user_id=user['id_user'], read=0) | Q(to_user_id=None, read=0))]
             return notifications
         except:
             return {
@@ -96,5 +95,22 @@ class NotificationSerializer(serializers.ModelSerializer):
         except Exception as e:
             return {
                 'msg': f'Error: {e}',
+                'status': 'error'
+            }
+
+    def send_incidence(incidence):
+        try:
+            if Notification.objects.create(**incidence):
+                return {
+                    'msg': 'Incidence sended',
+                    'status': 'success'
+                }
+            return {
+                'msg': 'Error while trying to send the incidence',
+                'status': 'warning'
+            }
+        except Exception as e:
+            return {
+                'Error': f'Error: {e}',
                 'status': 'error'
             }

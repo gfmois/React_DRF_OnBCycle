@@ -22,7 +22,16 @@ class BikeView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         return Response(serializer)
 
     def get_bikes(self, request):
-        return Response([BikeSerializer.to_bike(bike) for bike in self.queryset])
+        return Response([BikeSerializer.to_bike(bike) for bike in Bike.objects.all()])
 
     def update_bike(self, request):
         return Response(BikeSerializer.update_bike(request.data))
+    
+    def delete_bike(self, request, *args, **kwargs):
+        return Response(BikeSerializer.remove_bike(kwargs['id_bike']))
+
+    def model_cols(self, request):
+        return Response(BikeSerializer.get_model_cols())
+    
+    def create_bike(self, request):
+        return Response(BikeSerializer.create_bike(request.data))

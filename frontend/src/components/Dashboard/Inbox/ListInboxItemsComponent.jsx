@@ -13,6 +13,6 @@ export default function ListInboxItemsComponent() {
     }
     
     return (
-        <ListTableComponent items={userNotifications} sendNotification={true} notificationAction={loadNotification} modelMap={false} openModal={false} removeAction={removeNotificationAction} />
+        <ListTableComponent showAddModal={false} items={userNotifications} sendNotification={true} notificationAction={loadNotification} modelMap={false} openModal={false} removeAction={removeNotificationAction} />
     )
 }

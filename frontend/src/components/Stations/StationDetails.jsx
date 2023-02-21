@@ -15,6 +15,9 @@ import { CgKeyhole } from "react-icons/cg"
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useRent } from "../../hooks/useRent";
+import ButtonComponent from "../Layout/ButtonComponent";
+import NotificationItem from "../Notifications/NotificationItem";
+import SendNotificationComponent from "../Notifications/SendNotificationComponent";
 
 export default function StationDetails({
   visible,
@@ -28,6 +31,7 @@ export default function StationDetails({
   const { user } = useAuth()
   const [showMap, setShowMap] = useState(false);
   const [isRenting, setIsRenting] = useState(false)
+  const [showNotification, setShowNotification] = useState(false)
   const [avaBikes, setAvaBikes] = useState(item.slots.filter((e) => e.bike_id != null).length)
   const { isLoading, setIsLoading } = useRent()
 
@@ -38,10 +42,8 @@ export default function StationDetails({
   }, []);
 
   useEffect(() => {
-    console.log(isLoading);
     if (!isLoading) {
       let bikes = avaBikes
-      console.log(bikes, bikes--);
       setAvaBikes(bikes--)
     }
   }, [isLoading])
@@ -86,15 +88,15 @@ export default function StationDetails({
             <div className="w-full h-1/2 p-2 mb-1">
               <div className="w-full h-full flex flex-row p-4">
                 <div className="info flex-1 w-1/2 h-full pt-2 pl-2">
-                  <div className="info-station">
-                    <h1 className="bg-rose-600 uppercase text-2xl ">Station</h1>
+                  <div className="info-station bg-black/40 w-[95%]">
+                    <h1 className="bg-black/40 p-2 uppercase text-2xl ">Station</h1>
                     <div className="p-2">
                       <h1 className="text-xl">{item.name}</h1>
                       <p className="text-md">{item.city}</p>
                     </div>
                   </div>
-                  <div className="m-station-info mt-4">
-                    <h1 className="uppercase w-full bg-rose-600 text-2xl">
+                  <div className="m-station-info mt-4 bg-black/40 w-[95%]">
+                    <h1 className="uppercase w-full bg-black/40 text-2xl">
                       More Info
                     </h1>
                     <div className="p-2">
@@ -105,11 +107,19 @@ export default function StationDetails({
                       </div>
                     </div>
                   </div>
+                  <div className="m-station-info mt-4 w-[95%] flex items-center justify-start">
+                    <ButtonComponent 
+                      text="Incidence" 
+                      style="custom" 
+                      addStyle="focus:outline-none text-white bg-amber-500 hover:bg-amber-700 focus:ring-4 focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-amber-500 shadow-lg dark:hover:bg-amber-700 dark:focus:ring-amber-800" 
+                      action={() => setShowNotification(true)}
+                    />
+                  </div>
                 </div>
-                <div className="img-wrapper flex-1 w-1/2 h-full bg-yellow-300 box-border">
+                <div className="img-wrapper flex-1 w-1/2 h-full bg-transparent box-border">
                   <img
                     src={item.image}
-                    className="w-full h-full box-border"
+                    className="w-full h-full box-border rounded-xl"
                     alt=""
                   />
                 </div>
@@ -195,6 +205,7 @@ export default function StationDetails({
         </div>
       </div>
       <RentBikeModal visible={isRenting} bike={item.id_station} action={setBike} backButtonAction={setIsRenting} />
+      { !showNotification || <SendNotificationComponent backAction={() => setShowNotification(false)}/> }
     </>
   ) : (
     ""

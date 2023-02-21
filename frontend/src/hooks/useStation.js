@@ -55,9 +55,31 @@ export function useStations() {
             .catch((e) => console.log(e))
     }, [setStation])
 
+    const updateStation = useCallback((stationData) => {
+        StationService.updateStation(stationData)
+            .then(({ data }) => {
+                stations[stations.findIndex((s) => s.id_station == stationData.id_station)] = stationData
+                loadToast(data.msg, data.status)
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+    })
+
+    const removeStation = useCallback((idStation) => {
+        StationService.removeStation(idStation)
+            .then(({ data }) => {
+                setStation(stations.filter((e) => e.id_station != idStation))
+                loadToast(data.msg, data.status)
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+    })
+
     useEffect(() => { getStationsCols() }, [])
 
     useEffect(() => { getStations() }, [])
 
-    return { stations, station, cols, getStations, getStationsCols, addStation, getAllStation, setStations, setStation }
+    return { stations, station, cols, getStations, getStationsCols, addStation, getAllStation, setStations, setStation, updateStation, removeStation }
 }

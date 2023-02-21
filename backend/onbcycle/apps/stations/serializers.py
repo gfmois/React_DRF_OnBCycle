@@ -26,7 +26,7 @@ class StationSerializer(serializers.ModelSerializer):
     def read():
         stations = [{**StationSerializer.to_station(station), 'slots': SlotSerializer.getStationSlots(
             station.id_station)} for station in Station.objects.all()]
-
+        
         return stations
 
     def getStationById(id_station):
@@ -65,3 +65,22 @@ class StationSerializer(serializers.ModelSerializer):
                    'slots': SlotSerializer.getStationSlots(id_station)}
 
         return station
+
+    def update_station(station):
+        station['status'] = str(station['status']).capitalize()
+        try:
+            if Station.objects.filter(id_station=station['id_station']).update(**station):
+                return {
+                    'msg': f'Station {station["id_station"]} Updated',
+                    'status': 'success'
+                }
+            
+            return {
+                'msg': 'Error modifying the station',
+                'status': 'warning'
+            }
+        except Exception as e:
+            return {
+                'msg': f'Error: {e}',
+                'status': 'error'
+            }

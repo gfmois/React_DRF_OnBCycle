@@ -51,4 +51,4 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
     # @local_admin_required
     def get_rents(self, request, *args, **kwargs):
-        return Response(RentSerializer.to_rent(rent) for rent in self.queryset)
+        return Response(RentSerializer.to_rent(rent) for rent in Rent.objects.all())

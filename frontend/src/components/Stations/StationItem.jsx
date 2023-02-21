@@ -50,6 +50,7 @@ export default function StationItem({ station, changeFormStatus }) {
                 transition={{
                   duration: 1.5,
                   repeat: Infinity,
+                  repeatType: 'reverse'
                 }}
                 className={` ${station.status == 1
                   ? "flex w-full h-full border border-green-500 bg-transparent rounded-full"

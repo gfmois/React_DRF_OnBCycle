@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import SendNotificationComponent from "./Notifications/SendNotificationComponent";
 
-export default function FormModalComponent({ cols, changeVisibility, action, item = {}, showMap = true, onlyView = false, sendNotiButton = false, loadNotification }) {
+export default function FormModalComponent({ cols, required, changeVisibility, action, item = {}, showMap = true, onlyView = false, sendNotiButton = false, loadNotification }) {
   const [isMapVisible, setMapVisible] = useState(false);
   const [sendNotification, setSendNotification] = useState(false)
   const [markerItem, setMarkerItem] = useState();
@@ -15,19 +15,19 @@ export default function FormModalComponent({ cols, changeVisibility, action, ite
       return {
         type: 'text',
         placeholder: i,
-        required: true,
         id: i,
         value: item[i],
         label: i,
         name: i,
-        disabled: onlyView
+        disabled: onlyView,
+        required
       }
     }
 
     return {
       type: i[1],
       placeholder: i[0],
-      required: true,
+      required,
       id: i[0],
       value: "",
       label: i[0],

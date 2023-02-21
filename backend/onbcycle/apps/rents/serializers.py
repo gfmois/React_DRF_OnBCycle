@@ -22,7 +22,6 @@ class RentSerializer(serializers.ModelSerializer):
         }
 
     def rent_bike(id_slot, token, id_station):
-        print('AAA')
         user = UserSerializer.get_user(token)['id_user']
         if len(Rent.objects.raw(f'SELECT * FROM rents_rent r WHERE r.id_user_id = "{user}" AND r.end_date IS NULL;')) > 0:
             return {
@@ -80,7 +79,6 @@ class RentSerializer(serializers.ModelSerializer):
             raise Exception('No rent found for this user')
         except Exception as e:
             transaction.set_rollback(True)
-            print(e)
             return {
                 'msg': 'Error while trying leave the bike',
                 'status': 'error'

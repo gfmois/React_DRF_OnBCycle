@@ -17,5 +17,5 @@ export default function ListUserComponent() {
         getUsers()
     }, [])
 
-    return <ListTableComponent sendNotification={true} items={usersList} key={usersList.length} modelMap={false} notificationAction={loadNotification} />
+    return <ListTableComponent showAddModal={false} sendNotification={true} items={usersList} key={usersList.length} modelMap={false} notificationAction={loadNotification} />
 }
