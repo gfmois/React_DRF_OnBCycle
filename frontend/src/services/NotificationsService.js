@@ -12,6 +12,9 @@ const NotificationsSerivce = {
     },
     removeNotification: (notificationID) => {
         return Http().put(`notifications/read_notification/${notificationID}`)
+    },
+    sendIncidence: (incidence) => {
+        return Http().post('notifications/send_incidence', incidence)
     }
 }
 

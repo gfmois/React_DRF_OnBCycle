@@ -53,9 +53,21 @@ export function useNotifications() {
             })
     })
 
+    const sendIncidence = useCallback((incidence) => {
+        console.log(incidence);
+        NotificationsSerivce.sendIncidence(incidence)
+            .then(({ data }) => {
+                console.log(data);
+                loadToast(data.msg, data.status)
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+    })
+
     useEffect(() => getUserNotifications(), [])
 
-    return { sendNotification, getUserNotifications, userNotifications, setUserNotifications, getNotification, notification, setNotification, setLoading, loading, removeNotification }
+    return { sendNotification, getUserNotifications, userNotifications, setUserNotifications, getNotification, notification, setNotification, setLoading, loading, removeNotification, sendIncidence }
 }
 
 export default useNotifications

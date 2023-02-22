@@ -16,8 +16,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useRent } from "../../hooks/useRent";
 import ButtonComponent from "../Layout/ButtonComponent";
-import NotificationItem from "../Notifications/NotificationItem";
 import SendNotificationComponent from "../Notifications/SendNotificationComponent";
+
+import { useNotifications } from "../../hooks/useNotifications"
 
 export default function StationDetails({
   visible,
@@ -34,6 +35,7 @@ export default function StationDetails({
   const [showNotification, setShowNotification] = useState(false)
   const [avaBikes, setAvaBikes] = useState(item.slots.filter((e) => e.bike_id != null).length)
   const { isLoading, setIsLoading } = useRent()
+  const { sendIncidence } = useNotifications()
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,8 +49,6 @@ export default function StationDetails({
       setAvaBikes(bikes--)
     }
   }, [isLoading])
-
-  // TODO: Update item values on rent
 
   return visible ? (
     <>
@@ -96,7 +96,7 @@ export default function StationDetails({
                     </div>
                   </div>
                   <div className="m-station-info mt-4 bg-black/40 w-[95%]">
-                    <h1 className="uppercase w-full bg-black/40 text-2xl">
+                    <h1 className="uppercase w-full bg-black/40 text-2xl p-2">
                       More Info
                     </h1>
                     <div className="p-2">
@@ -205,7 +205,7 @@ export default function StationDetails({
         </div>
       </div>
       <RentBikeModal visible={isRenting} bike={item.id_station} action={setBike} backButtonAction={setIsRenting} />
-      { !showNotification || <SendNotificationComponent backAction={() => setShowNotification(false)}/> }
+      { !showNotification || <SendNotificationComponent sendAction={(msg) => sendIncidence({ ...msg, to_user_id: null, station: item.id_station })} backAction={() => setShowNotification(false)}/> }
     </>
   ) : (
     ""

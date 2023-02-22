@@ -24,4 +24,12 @@ class NotificationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     
     def read_notification(self, request, *args, **kwargs):
         return Response(NotificationSerializer.read_notification(kwargs['id_notification']))
+
+    def send_incidence(self, request):
+        serializer = {
+            **request.data,
+            'from_user_id': request.user
+        }
+        print(serializer)
+        return Response(NotificationSerializer.send_incidence(serializer))
         

@@ -9,3 +9,4 @@ class Notification(models.Model):
     body = models.CharField(max_length=255)
     send_date = models.CharField(max_length=255)
     read = models.BooleanField(default=0)
+    station = models.ForeignKey('stations.Station', on_delete=models.DO_NOTHING, related_name="station", blank=True, null=True)

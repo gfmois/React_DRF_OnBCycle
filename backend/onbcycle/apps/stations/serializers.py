@@ -22,6 +22,9 @@ class StationSerializer(serializers.ModelSerializer):
             'image': instance.image,
             'type': instance.type
         }
+        
+    def get_station_instance(stationID):
+        return Station.objects.filter(id_station=stationID).first()
 
     def read():
         stations = [{**StationSerializer.to_station(station), 'slots': SlotSerializer.getStationSlots(

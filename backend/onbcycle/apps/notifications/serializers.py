@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.db.models import Q
 from datetime import datetime
 from ..users.serializers import UserSerializer
+from ..stations.serializers import StationSerializer
 from .models import Notification
 
 
@@ -29,7 +30,8 @@ class NotificationSerializer(serializers.ModelSerializer):
                              if hrs > 0 else
                              f"{mnts} minutes ago"),
                     "title": instance.title,
-                    "body": instance.body
+                    "body": instance.body,
+                    'id_station': str(instance.station)
                 }
 
             return {
@@ -37,7 +39,8 @@ class NotificationSerializer(serializers.ModelSerializer):
                 "from": str(instance.from_user_id),
                 "to": str(instance.to_user_id),
                 "date": instance.send_date,
-                "read": instance.read
+                "read": instance.read,
+                'id_station': str(instance.station)
             }
         except Exception as e:
             return {
@@ -100,6 +103,8 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     def send_incidence(incidence):
         try:
+            incidence['station'] = StationSerializer.get_station_instance(incidence['station'])
+            incidence['send_date'] = datetime.now()
             if Notification.objects.create(**incidence):
                 return {
                     'msg': 'Incidence sended',
