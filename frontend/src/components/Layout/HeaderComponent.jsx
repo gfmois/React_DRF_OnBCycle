@@ -79,7 +79,7 @@ export default function Header() {
         </div>
         <div className="md:order-2 flex items-center justify-center gap-4">
           <UserDropDown logout={logout} isAdmin={isAdmin} user={user} action={setIsUserDropVisible} isVisible={isUserDropVisible} />
-          <NotificationDropDown/>
+          { !user || <NotificationDropDown/> }
         </div>
       </div>
     </nav>

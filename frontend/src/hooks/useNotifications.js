@@ -54,7 +54,6 @@ export function useNotifications() {
     })
 
     const sendIncidence = useCallback((incidence) => {
-        console.log(incidence);
         NotificationsSerivce.sendIncidence(incidence)
             .then(({ data }) => {
                 console.log(data);
@@ -65,9 +64,15 @@ export function useNotifications() {
             })
     })
 
+    const clearNotifications = useCallback(() => {
+        console.log('AAAA');
+        setNotification({})
+        setUserNotifications([])
+    })
+
     useEffect(() => getUserNotifications(), [])
 
-    return { sendNotification, getUserNotifications, userNotifications, setUserNotifications, getNotification, notification, setNotification, setLoading, loading, removeNotification, sendIncidence }
+    return { sendNotification, clearNotifications, getUserNotifications, userNotifications, setUserNotifications, getNotification, notification, setNotification, setLoading, loading, removeNotification, sendIncidence }
 }
 
 export default useNotifications

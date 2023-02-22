@@ -7,7 +7,6 @@ import { motion } from "framer-motion"
 export default function NotificationDropDown() {
     const [showNotifications, setNotifications] = useState(false)
     const { userNotifications, removeNotification } = useNotifications()
-    
 
     return (
         <div className="bg-white/30 border rounded-full p-2">

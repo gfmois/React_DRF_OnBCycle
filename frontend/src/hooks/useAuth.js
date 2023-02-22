@@ -5,11 +5,13 @@ import AuthContext from "../context/AuthContext";
 import AuthService from "../services/AuthService";
 import JWTService from "../services/JWTService";
 import { useToast } from "./useToaster";
+import { useNotifications } from "./useNotifications"
 
 export function useAuth() {
   const { loadToast, toast } = useToast()
   const navigate = useNavigate();
   const [usersList, setUsersList] = useState([])
+  const { clearNotifications } = useNotifications()
   const {
     user,
     setUser,
@@ -82,6 +84,7 @@ export function useAuth() {
   );
 
   const logout = useCallback(() => {
+    clearNotifications()
     JWTService.removeRefreshToken()
     JWTService.removeToken()
     setJwt(null)

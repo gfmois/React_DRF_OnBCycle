@@ -65,7 +65,8 @@ class NotificationSerializer(serializers.ModelSerializer):
                 'msg': 'Notification Sended Correctly',
                 'status': 'success'
             }
-        except:
+        except Exception as e:
+            print(e)
             return {
                 'msg': 'It was an error sending the notitication',
                 'status': 'error'
@@ -74,7 +75,11 @@ class NotificationSerializer(serializers.ModelSerializer):
     def get_user_notifications(email):
         try:
             user = UserSerializer.get_user_by_email(email)
-            notifications = [NotificationSerializer.to_notification(notification) for notification in Notification.objects.filter(Q(to_user_id=user['id_user'], read=0) | Q(to_user_id=None, read=0))]
+            if user['role'] == 'Admin':
+                notifications = [NotificationSerializer.to_notification(notification) for notification in Notification.objects.filter(Q(to_user_id=user['id_user'], read=0) | Q(to_user_id=None, read=0))] 
+            else:
+                notifications = [NotificationSerializer.to_notification(notification) for notification in Notification.objects.filter(to_user_id=user['id_user'], read=0)]
+            
             return notifications
         except:
             return {
