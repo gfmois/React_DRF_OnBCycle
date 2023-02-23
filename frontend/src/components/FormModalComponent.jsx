@@ -110,8 +110,8 @@ export default function FormModalComponent({ cols, required, changeVisibility, a
   ) : (
     <>
         <div className="wrapper z-50">
-          <div className="h-full w-full z-50 absolute flex justify-center top-20 right-0 left-0 bottom-0">
-            <div className="border-[3px] border-[#3f3f3f] dark:bg-[#212121] bg-red-700 w-3/4 h-1/2 rounded-xl">
+          <div className="h-fit w-full z-50 absolute flex justify-center top-20 right-0 left-0 bottom-0">
+            <div className="border-[3px] border-[#3f3f3f] dark:bg-[#212121] xs:w-[90%] xs:h-full md:w-3/4 md:h-1/2 lg:w-3/4 lg:h-3/4 rounded-xl">
               <form className="w-full h-full grid gap-6 grid-cols-1 sm:grid-cols-2 p-2">
                 {items.map((item, index) => {
                   return (

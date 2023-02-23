@@ -50,7 +50,7 @@ class SlotSerializer(serializers.ModelSerializer):
             if Slot.objects.filter(id_slot=slot['id_slot']).update(
                 id_station = slot['id_station'],
                 status = str(slot['status']).capitalize(),
-                bike_id = None if str(slot['bike_id']).__len__() is 0 else slot['bike_id']
+                bike_id = None if str(slot['bike_id']).__len__() == 0 else slot['bike_id']
             ):
                 return {
                     'msg': f'Slot {slot["id_slot"]} updated correctly',
@@ -118,7 +118,7 @@ class SlotSerializer(serializers.ModelSerializer):
     def add_slot(slot):
         try:
             slot['status'] = str(slot['status']).capitalize()
-            slot['bike_id'] = None if str(slot['bike_id']).__len__() is 0 else slot['bike_id']
+            slot['bike_id'] = None if str(slot['bike_id']).__len__() == 0 else slot['bike_id']
             if Slot.objects.create(**slot):
                 return {
                     'msg': 'Slot Created',

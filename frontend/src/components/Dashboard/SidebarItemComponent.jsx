@@ -1,6 +1,6 @@
 import { BsArrowRightSquareFill } from "react-icons/bs"
 
-export default function SidebarItemComponent({ name, setPage, icon, index }) {
+export default function SidebarItemComponent({ name, setPage, index }) {
     return (
         <li>
             <div className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer" onClick={() => setPage(index)}>

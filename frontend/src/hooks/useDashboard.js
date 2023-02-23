@@ -6,6 +6,7 @@ export function useDashboard() {
     const getDashboardInfo = () => {
         DashboardService.getDashboardInfo()
             .then(({ data }) => {
+                console.log(data);
                 setInfo(data)
             })
             .catch((e) => {

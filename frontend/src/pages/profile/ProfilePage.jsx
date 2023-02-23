@@ -29,8 +29,8 @@ export default function ProfilePage() {
     return (
         <div className="w-screen h-[93vh] p-4 relative flex flex-col gap-4">
             <div className="w-full h-[25%] bg-[url(/bike.jpg)] bg-no-repeat bg-cover p-4 rounded-lg shadow-xl" />
-            <img src={user.avatar} className="absolute top-[20%] rounded-full w-[128px] h-[128px] xs:left-[35%] sm:left-[43%] md:left-[48%] shadow-xl" />
-            <div className="w-full h-[65%] bg-gray-200 rounded-lg grid grid-cols-3 p-2">
+            <img src={user.avatar} className="absolute xs:top-[12%] md:top-[20%] rounded-full w-[128px] h-[128px] xs:left-[35%] sm:left-[43%] md:left-[48%] shadow-xl" />
+            <div className="w-full xs:h-full xs:overflow-y-scroll remove-scroll md:h-[65%] bg-gray-200 rounded-lg md:grid md:grid-cols-3 p-2">
                 <div className="bg-black/40 mt-16 p-4 flex justify-start flex-col gap-4">
                     <h1 className="text-black text-2xl text-center uppercase">Settings</h1>
                     <InputComponent id="email" placeholder={user.email} value={user.email} isView={true} required={true} type="email" text_label="Email" form={form} />

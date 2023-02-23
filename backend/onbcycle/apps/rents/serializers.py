@@ -22,6 +22,9 @@ class RentSerializer(serializers.ModelSerializer):
             'station_from': str(instance.station_from.id_station),
             'station_to': str(instance.station_to.id_station)
         }
+    
+    def get_rents():
+        return [RentSerializer.to_rent(rent) for rent in Rent.objects.all()]
 
     def rent_bike(id_slot, token, id_station):
         user = UserSerializer.get_user(token)['id_user']

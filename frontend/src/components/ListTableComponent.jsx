@@ -48,16 +48,18 @@ export default function ListTableComponent({
                 ? <>
                     {itemSelected
                         ? (
-                            <FormModalComponent
-                                loadNotification={loadNotification}
-                                sendNotiButton={!replyModal ? sendNotification : false}
-                                showMap={modelMap}
-                                onlyView={onlyView}
-                                action={updateAction}
-                                cols={Object.keys(itemSelected)}
-                                changeVisibility={() => setItemSelected(false)}
-                                item={itemSelected}
-                            />
+                            <div className="w-full h-full">
+                                <FormModalComponent
+                                    loadNotification={loadNotification}
+                                    sendNotiButton={!replyModal ? sendNotification : false}
+                                    showMap={modelMap}
+                                    onlyView={onlyView}
+                                    action={updateAction}
+                                    cols={Object.keys(itemSelected)}
+                                    changeVisibility={() => setItemSelected(false)}
+                                    item={itemSelected}
+                                />
+                            </div>
                         )
                         : !replyModal || <SendNotificationComponent sendAction={loadNotification} backAction={setReplyModal} />
                     }
