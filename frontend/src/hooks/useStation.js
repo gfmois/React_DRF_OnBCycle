@@ -69,11 +69,13 @@ export function useStations() {
     const removeStation = useCallback((idStation) => {
         StationService.removeStation(idStation)
             .then(({ data }) => {
-                setStation(stations.filter((e) => e.id_station != idStation))
                 loadToast(data.msg, data.status)
+                if (data.status != "error" && data.status != "warning") {
+                    setStation(stations.filter(e => e.id_station != idStation))
+                }
             })
             .catch((e) => {
-                console.log(e);
+                loadToast('Foreign Key', 'warning')
             })
     })
 

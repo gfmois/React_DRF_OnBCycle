@@ -32,8 +32,8 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             return Response(rent, status=status.HTTP_200_OK)
         except:
             return Response({
-                'msg': 'Hubo un error en la reserva',
-                'status': 400
+                'msg': 'It was an error on the rent',
+                'status': 'error'
             }, status=status.HTTP_400_BAD_REQUEST)
 
     def get_rented_bike(self, request: Request):
@@ -52,3 +52,6 @@ class RentView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     # @local_admin_required
     def get_rents(self, request, *args, **kwargs):
         return Response(RentSerializer.to_rent(rent) for rent in Rent.objects.all())
+
+    def get_user_rents(self, request):
+        return Response(RentSerializer.get_user_rents(request.user))

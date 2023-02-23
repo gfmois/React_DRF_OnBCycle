@@ -31,7 +31,6 @@ export default function ListTableComponent({
             data = { ...notificationData, to: itemSelected.email }
         } else {
             getNotification(replyModal.id_notification)
-            console.log(notification);
             if (!loading) {
                 data = { ...notificationData, to: notification.from }
             } else {

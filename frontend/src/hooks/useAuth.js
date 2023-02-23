@@ -19,7 +19,6 @@ export function useAuth() {
     setIsAdmin,
     jwt,
     setJwt,
-    refreshJwt,
     setRefreshJwt,
   } = useContext(AuthContext);
 
@@ -39,11 +38,11 @@ export function useAuth() {
           role: data.user.role,
           email: data.user.email
         })
+        loadToast(`${data.user.name} your account has been created.`, 'success')
         JWTService.saveToken(data.token);
         JWTService.saveRefreshToken(data.refresh_token);
         setJwt(data.token);
         setRefreshJwt(data.refresh_token);
-        loadToast(`${data.user.name} your account has been created.`, 'success')
         navigate("/stations");
       }).catch((e) => {
         loadToast(`${e.response.data[0]}`, 'error')
@@ -89,6 +88,7 @@ export function useAuth() {
     JWTService.removeToken()
     setJwt(null)
     setRefreshJwt(null)
+    setIsAdmin(false)
     loadToast('Session Closed', 'warning')
     navigate("/");
     setUser(null)

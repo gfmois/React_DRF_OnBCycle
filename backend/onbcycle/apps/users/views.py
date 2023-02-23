@@ -41,7 +41,7 @@ class UserView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         except:
             return Response({
                 'msg': 'No token found',
-                'status': 401
+                'status': 'error'
             }, status=status.HTTP_401_UNAUTHORIZED)
 
     def get_users(self, request: Request):
@@ -52,7 +52,7 @@ class UserView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
                 if user['role'] != 'Admin':
                     return Response({
                         'msg': 'You are not authorized to stay here',
-                        'status': 401
+                        'status': 'error'
                     }, status=status.HTTP_401_UNAUTHORIZED)
                 
                 users = UserSerializer.get_users()
@@ -61,5 +61,14 @@ class UserView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         except:
             return Response({
                 'msg': 'No token found',
-                'status': 401
+                'status': 'error'
             }, status=status.HTTP_401_UNAUTHORIZED)
+
+    def update_profile(self, request):
+        return Response(UserSerializer.update_profile(request.data))
+
+    def delete_user(self, request, *args, **kwargs):
+        return Response(UserSerializer.delete_user(kwargs['id_user']))
+    
+    def get_dashboard_info(self, request):
+        return Response(UserSerializer.get_dashboard_info())

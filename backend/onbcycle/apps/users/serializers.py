@@ -3,6 +3,8 @@ from django.contrib.auth.hashers import (make_password, check_password)
 from django.contrib.auth import authenticate
 from django.conf import settings
 from .models import User
+from ..bikes.models import Bike
+from ..slots.models import Slot
 import jwt
 
 
@@ -38,13 +40,13 @@ class UserSerializer(serializers.ModelSerializer):
             if user is None:
                 return {
                     'msg': 'No user found',
-                    'status': 400
+                    'status': 'error'
                 }
             return UserSerializer.to_user(user, is_to_show=True)
         except:
             return {
                 'msg': 'Error on decode token',
-                'status': 400
+                'status': 'error'
             }
         
     def get_user_by_email(email):
@@ -108,7 +110,61 @@ class UserSerializer(serializers.ModelSerializer):
             else:
                 return {
                     'msg': 'Password or Email invalid',
-                    'status': 400
+                    'status': 'warning'
                 }
         except:
             raise ('Error on Login')
+    
+    def update_profile(profileData):
+        try:
+            user = UserSerializer.get_user_by_email(profileData['email'])
+            if str(profileData['password']).__len__() > 0 and str(profileData['re_password'].__len__() > 0):
+                if profileData['password'] != profileData['re_password']:
+                    return {
+                        'msg': 'Passwords does not match',
+                        'status': 'error'
+                    }
+                profileData['password'] = make_password(profileData['password'])
+            else:
+                del profileData['password']
+                
+            del profileData['re_password']
+            if User.objects.filter(id_user=user['id_user']).update(**profileData):
+                return {
+                    'msg': 'User Updated',
+                    'status': 'success'
+                }
+                
+            return {
+                'msg': 'User not found',
+                'status': 'warning'
+            }
+        except Exception as e:
+            return {
+                'msg': f'Error: {e}',
+                'status': 'error'
+            }
+        
+    def delete_user(user_id):
+        try:
+            if User.objects.filter(id_user=user_id).delete():
+                return {
+                    'msg': 'User deleted',
+                    'status': 'success'
+                }
+            return {
+                'msg': 'No user found',
+                'status': 'warning'
+            }
+        except Exception as e:
+            return {
+                'msg': f'Error: {e}',
+                'status': 'error'
+            }
+    
+    def get_dashboard_info():
+        return {
+            'users': User.objects.all().__len__(),
+            "bikes": Bike.objects.all().__len__(),
+            'slots': Slot.objects.all().__len__()
+        }

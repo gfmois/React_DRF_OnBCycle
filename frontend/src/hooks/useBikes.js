@@ -10,7 +10,6 @@ export function useBikes() {
     const getBikes = useCallback(() => {
         BikeService.getBikes()
             .then(({ data }) => {
-                console.log(data);
                 setBikes(data)
             })
             .catch((e) => console.log(e))
@@ -19,7 +18,9 @@ export function useBikes() {
     const updateBike = useCallback((bikeData) => {
         BikeService.updateBike(bikeData)
             .then(({ data }) => {
-                bikes[bikes.findIndex(e => e.id_bike == bikeData.id_bike)] = { ...bikeData, status: Boolean(bikeData.status) || false }
+                let b = bikes
+                b[b.findIndex(e => e.id_bike == bikeData.id_bike)]['status'] = bikeData.status || false
+                setBikes(b)
                 loadToast(data.msg, data.status)
             })
             .catch((e) => {
@@ -31,6 +32,9 @@ export function useBikes() {
         BikeService.deleteBike(bikeID)
             .then(({ data }) => {
                 loadToast(data.msg, data.status)
+                if (data.status != "error" && data.status != "warning") {
+                    setBikes(bikes.filter(e => e.id_bike != bikeID))
+                }
             })
             .catch((e) => {
                 console.log(e);
@@ -40,7 +44,6 @@ export function useBikes() {
     const getModelCols = useCallback(() => {
         BikeService.getCols()
             .then(({ data }) => {
-                console.log(data);
                 setCols(data)
             })
             .catch((e) => {

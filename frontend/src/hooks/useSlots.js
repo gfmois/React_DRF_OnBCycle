@@ -40,8 +40,10 @@ export function useSlots() {
     const removeSlot = useCallback((idSlot) => {
         SlotService.removeSlot(idSlot)
             .then(({ data }) => {
-                console.log(data);
-                loadToast(data.msg, data.error)
+                loadToast(data.msg, data.status)
+                if (data.status != "error" && data.status != "warning") {
+                    setSlots(slots.filter(e => e.id_slot != idSlot))
+                }
             })
             .catch((e) => {
                 console.log(e);

@@ -50,8 +50,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
             'city': request.data.get('city'),
             'type': request.data.get('type')
         }
-
-        #? ASK -> This should be in the serializer? 
+ 
         try:
             with Image.open(request.FILES['file']) as img:
                 img.verify()
@@ -88,7 +87,7 @@ class StationView(mixins.DestroyModelMixin, viewsets.GenericViewSet):
         station.delete()
         return Response({
             "msg": "Station deleted correctly",
-            "status": 200
+            "status": "success"
         }, status=status.HTTP_200_OK)
 
     def update_station(self, request):

@@ -4,13 +4,15 @@ from .models import Rent
 from datetime import datetime
 from ..slots.serializers import SlotSerializer
 from ..users.serializers import UserSerializer
+from ..stations.serializers import StationSerializer
 
 
 class RentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rent
-        fields = ('id_rent', 'bike_id', 'start_date', 'end_date', 'station_from', 'station_to')
-        
+        fields = ('id_rent', 'bike_id', 'start_date',
+                  'end_date', 'station_from', 'station_to')
+
     def to_rent(instance):
         return {
             'id_rent': instance.id_rent,
@@ -26,7 +28,7 @@ class RentSerializer(serializers.ModelSerializer):
         if len(Rent.objects.raw(f'SELECT * FROM rents_rent r WHERE r.id_user_id = "{user}" AND r.end_date IS NULL;')) > 0:
             return {
                 'msg': 'You have an rent already',
-                'status': 400
+                'status': 'warning'
             }
 
         id_bike = SlotSerializer.rent_bike_slot(id_slot)
@@ -48,7 +50,7 @@ class RentSerializer(serializers.ModelSerializer):
                 'bike': id_bike,
                 'status': 'success'
             }
-    
+
     @transaction.atomic()
     def leave_bike(token, id_bike, id_station):
         user = UserSerializer.get_user(token)['id_user']
@@ -57,16 +59,18 @@ class RentSerializer(serializers.ModelSerializer):
                 'msg': "You don't have active rents",
                 'status': 'success'
             }
-        
+
         try:
             rent = Rent.objects.filter(id_user=user, end_date__isnull=True)
             if rent.exists():
                 slot = SlotSerializer.get_random_slot(id_station, to_rent=True)
                 try:
                     if ('msg', 'status') not in slot:
-                        slot_instance = SlotSerializer.get_slot_instance(slot['id_slot'])
+                        slot_instance = SlotSerializer.get_slot_instance(
+                            slot['id_slot'])
                     if slot_instance.exists():
-                        rent.update(end_date=datetime.now(), station_to_id=id_station)
+                        rent.update(end_date=datetime.now(),
+                                    station_to_id=id_station)
                         slot_instance.update(bike_id=id_bike)
                         return {
                             'msg': 'You leaved correctly the bike',
@@ -74,8 +78,7 @@ class RentSerializer(serializers.ModelSerializer):
                         }
                 except:
                     return slot
-                    
-            
+
             raise Exception('No rent found for this user')
         except Exception as e:
             transaction.set_rollback(True)
@@ -83,11 +86,12 @@ class RentSerializer(serializers.ModelSerializer):
                 'msg': 'Error while trying leave the bike',
                 'status': 'error'
             }
-    
+
     def get_bike(token):
         try:
             user_id = UserSerializer.get_user(token)['id_user']
-            rent = Rent.objects.filter(id_user_id=user_id, end_date__isnull=True).first()
+            rent = Rent.objects.filter(
+                id_user_id=user_id, end_date__isnull=True).first()
             if rent is None:
                 return {
                     'msg': 'No bike rented already',
@@ -100,5 +104,35 @@ class RentSerializer(serializers.ModelSerializer):
         except:
             return {
                 'msg': 'Error trying to get user rent',
+                'status': 'error'
+            }
+
+    def get_user_rents(user):
+        try:
+            formater = "%Y-%m-%d %H:%M:%S.%f"
+            rents = []
+            for rent in Rent.objects.filter(id_user=user.id_user):
+                end_date = datetime.strptime(rent.end_date, formater)
+                start_date = datetime.strptime(rent.start_date, formater)
+                dif = start_date - end_date
+                hrs, segs = divmod(dif.seconds, 3600)
+                mnts = segs // 60
+            rents = [
+                {
+                    **RentSerializer.to_rent(rent),
+                    'station_img': str(rent.station_to.image),
+                    "from": str(rent.station_from.name),
+                    "to": str(rent.station_to.name),
+                    'str_date': (f"{dif.days} days and {hrs} hours ago"
+                                 if dif.days > 0 else
+                                 f"{hrs} hours and {mnts} minutes ago"
+                                 if hrs > 0 else
+                                 f"{mnts} minutes ago")
+                } for rent in Rent.objects.filter(id_user=user.id_user)]
+            return rents
+        except Exception as e:
+            print(e)
+            return {
+                'msg': 'Error recovering user rents',
                 'status': 'error'
             }

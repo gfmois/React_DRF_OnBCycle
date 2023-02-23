@@ -56,7 +56,6 @@ export function useNotifications() {
     const sendIncidence = useCallback((incidence) => {
         NotificationsSerivce.sendIncidence(incidence)
             .then(({ data }) => {
-                console.log(data);
                 loadToast(data.msg, data.status)
             })
             .catch((e) => {
@@ -65,7 +64,6 @@ export function useNotifications() {
     })
 
     const clearNotifications = useCallback(() => {
-        console.log('AAAA');
         setNotification({})
         setUserNotifications([])
     })

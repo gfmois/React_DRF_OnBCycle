@@ -15,6 +15,9 @@ const RentService = {
     },
     getAllReserves() {
         return Http().get('rents/getRents')
+    },
+    getUserRents() {
+        return Http().get('rents/get_user_rents')
     }
 }
 
